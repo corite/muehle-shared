@@ -8,6 +8,7 @@ import com.google.common.graph.GraphBuilder;
 import com.google.common.graph.ImmutableGraph;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.stream.Collectors;
 
 import static backend.entities.GamePhase.*;
@@ -161,7 +162,7 @@ public class Game {
                 .get();
     }
     private boolean isCoordinateOccupied(Coordinate coordinate) {
-        return NONE.equals(getPositionAtCoordinate(coordinate).getStoneState());
+        return !NONE.equals(getPositionAtCoordinate(coordinate).getStoneState());
     }
 
 
@@ -363,6 +364,18 @@ public class Game {
 
         setNextOperationTake(false);// will continue as per usual in the next move
         setNextPlayerToMove(getOtherPlayer(player));
+    }
+
+    public void printField() {
+        for (int i = 3; i >= -3; i--) {
+            int finalI = i;
+            getField().nodes().stream()
+                    .filter(pos -> pos.getCoordinate().getY() == finalI)
+                    .sorted(Comparator.comparingInt(pos -> pos.getCoordinate().getX()))
+                    .map(Position::getStoneState)
+                    .forEach(System.out::print);
+            System.out.println();
+        }
     }
 
 }

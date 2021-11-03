@@ -16,8 +16,6 @@ public enum StoneState {
 
     @Override
     public String toString() {
-        return "StoneState{" +
-                "state=" + state +
-                '}';
+        return "{" + state + '}';
     }
 }
