@@ -41,18 +41,13 @@ public class GUI{
                 //Wenn das JFrame größer in der Breite wird, wird das JLabel der Breite nach zentriert
                 if (frame.getWidth()>frame.getHeight()){
                     draw.setBounds(frame.getWidth()/2-frame.getHeight()/2,0,frame.getHeight(),frame.getHeight());
+                    draw.paintComponent(draw.getGraphics());
                 }
                 //Andersherum, wenn das JFrame größer in der Höhe wird
                 else{
-                    draw.setBounds(0,frame.getHeight()/2-frame.getWidth(),frame.getWidth(),frame.getWidth());
+                    draw.setBounds(0,frame.getHeight()/2-frame.getWidth()/2,frame.getWidth(),frame.getWidth());
+                    draw.paintComponent(draw.getGraphics());
                 }
-            }
-        });
-        //Updaten des Mühle Bretts sobald das JLabel, bzw. JFrame resized wird
-        draw.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                draw.paintComponent(draw.getGraphics());
             }
         });
     }
