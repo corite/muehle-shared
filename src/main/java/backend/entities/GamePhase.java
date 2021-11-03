@@ -11,4 +11,11 @@ public enum GamePhase {
     public int getValue() {
         return state;
     }
+
+    @Override
+    public String toString() {
+        return "GamePhase{" +
+                "state=" + state +
+                '}';
+    }
 }

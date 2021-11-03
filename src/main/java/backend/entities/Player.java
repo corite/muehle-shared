@@ -59,4 +59,14 @@ public class Player {
         result = 31 * result + getPhase().hashCode();
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "name='" + name + '\'' +
+                ", color=" + color +
+                ", phase=" + phase +
+                ", placedStones=" + placedStones +
+                '}';
+    }
 }

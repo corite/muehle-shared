@@ -30,4 +30,30 @@ public class Position {
         return coordinate;
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Position position = (Position) o;
+
+        if (!getCoordinate().equals(position.getCoordinate())) return false;
+        return getStoneState() == position.getStoneState();
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getCoordinate().hashCode();
+        result = 31 * result + getStoneState().hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Position{" +
+                "coordinate=" + coordinate +
+                ", stoneState=" + stoneState +
+                '}';
+    }
 }
