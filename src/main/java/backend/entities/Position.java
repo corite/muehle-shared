@@ -1,23 +1,21 @@
 package backend.entities;
 
 public class Position {
-    private final int x;
-    private final int y;
+
+    private Coordinate coordinate;
     private StoneState stoneState;//white, black or not set as defined in the enum
 
 
     public Position(int x, int y) {
-    this(x,y, StoneState.NONE);
+        this(new Coordinate(x,y));
+    }
+    public Position(Coordinate coordinate) {
+    this(coordinate, StoneState.NONE);
     }
 
-    public Position(int x, int y, StoneState stoneState) {
-        this.x = x;
-        this.y = y;
+    public Position(Coordinate coordinate, StoneState stoneState) {
+        this.coordinate = coordinate;
         this.stoneState = stoneState;
-    }
-
-    public int getX() {
-        return x;
     }
 
     public StoneState getStoneState() {
@@ -28,7 +26,8 @@ public class Position {
         this.stoneState = stoneState;
     }
 
-    public int getY() {
-        return y;
+    public Coordinate getCoordinate() {
+        return coordinate;
     }
+
 }

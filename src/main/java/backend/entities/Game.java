@@ -1,13 +1,24 @@
 package backend.entities;
 
+import backend.exceptions.GameException;
+import backend.exceptions.IllegalMoveException;
+import backend.exceptions.InvalidPhaseException;
+import backend.exceptions.IllegalPlayerException;
 import com.google.common.graph.GraphBuilder;
 import com.google.common.graph.ImmutableGraph;
+
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+
+import static backend.entities.GamePhase.*;
+import static backend.entities.StoneState.NONE;
 
 public class Game {
     private final ImmutableGraph<Position> field;
     private final Player player1;
     private final Player player2;
     private Player nextPlayerToMove;
+    private boolean isNextOperationTake;
 
     public Game(Player player1, Player player2) {
         this.player1 = player1;
@@ -32,8 +43,16 @@ public class Game {
         return nextPlayerToMove;
     }
 
-    public void setNextPlayerToMove(Player nextPlayerToMove) {
+    private void setNextPlayerToMove(Player nextPlayerToMove) {
         this.nextPlayerToMove = nextPlayerToMove;
+    }
+
+    public boolean isNextOperationTake() {
+        return isNextOperationTake;
+    }
+
+    private void setNextOperationTake(boolean nextOperationTake) {
+        isNextOperationTake = nextOperationTake;
     }
 
     private Player getStartPlayer() {
@@ -77,7 +96,6 @@ public class Game {
         Position p22 = new Position(-3,-3);
         Position p23 = new Position(0,-3);
         Position p24 = new Position(3,-3);
-
 
         return GraphBuilder
                 .undirected()
@@ -124,6 +142,227 @@ public class Game {
                 .putEdge(p23,p20)
                 .putEdge(p24,p15)
                 .build();
+    }
+
+    /**
+     * Checks if it is this players turn to make a move.
+     * @param player the player to be checked
+     */
+    private boolean isThisPlayersTurn(Player player) {
+        return this.getNextPlayerToMove().equals(player);
+    }
+
+    private Position getPositionAtCoordinate(Coordinate coordinate) {
+        return getField()
+                .nodes()
+                .stream()
+                .filter(position -> position.getCoordinate().equals(coordinate))
+                .findFirst()
+                .get();
+    }
+    private boolean isCoordinateOccupied(Coordinate coordinate) {
+        return NONE.equals(getPositionAtCoordinate(coordinate).getStoneState());
+    }
+
+
+    /**
+     * checks whether the player has a stone at position 'from' and whether position 'to' is not occupied
+     */
+    private boolean isMovePossible(Player player, Coordinate from, Coordinate to) {
+        return getPositionAtCoordinate(from).getStoneState().equals(player.getColor()) && getPositionAtCoordinate(to).getStoneState().equals(NONE);
+    }
+    private boolean areAdjacentNodes(Coordinate from, Coordinate to) {
+        return getField().adjacentNodes(getPositionAtCoordinate(from)).contains(getPositionAtCoordinate(to));
+    }
+
+
+
+
+    private ArrayList<Position> getPositions(Player player) {
+        return getField()
+                .nodes()
+                .stream()
+                .filter(position -> position.getStoneState().equals(player.getColor()))
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+
+
+    private Player getOtherPlayer(Player player) {
+        if (getPlayer1().equals(player)) {
+            return getPlayer2();
+        } else if (getPlayer2().equals(player)) {
+            return getPlayer1();
+        } else {
+            throw new IllegalPlayerException();
+        }
+    }
+    private void updateGamePhases() {
+        updateGamePhase(getPlayer1());
+        updateGamePhase(getPlayer2());
+    }
+
+    private void updateGamePhase(Player player) {
+        GamePhase oldPhase = player.getPhase();
+        switch (oldPhase) {
+            case PLACE -> {
+                if (player.getPlacedStones()==8) {
+                    player.setPhase(MOVE);
+                }
+            }
+            case MOVE -> {
+                if (getPositions(player).size()<=3) {
+                    player.setPhase(FLY);
+                }
+                if (!isAbleToMove(player)) {
+                    player.setPhase(LOST);
+                    getOtherPlayer(player).setPhase(WON);
+                }
+            }
+            case FLY -> {
+                if (getPositions(player).size()==0) {
+                    player.setPhase(LOST);
+                    getOtherPlayer(player).setPhase(WON);
+                }
+                if (!isAbleToMove(player)) {
+                    player.setPhase(LOST);
+                    getOtherPlayer(player).setPhase(WON);
+                }
+            }
+        }
+    }
+
+
+
+    private boolean isPartOfMill(Player player, Coordinate coordinate) {
+        for (Position neighbour : getField().adjacentNodes(getPositionAtCoordinate(coordinate))) {
+            //if one of the adjacent nodes has a neighbour of the same colour that is not the original one, they complete a mill
+            if (getField().adjacentNodes(neighbour).stream()
+                    .filter(pos -> player.getColor().equals(pos.getStoneState()))//Stones of the same colour
+                    .anyMatch(pos -> !pos.equals(neighbour)))//Neighbouring stone that is not the original one
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isAbleToMove(Player player) {
+        ArrayList<Position> playerPositions = getPositions(player);
+        for (Position position : playerPositions) {
+            if (getField().adjacentNodes(position).stream().anyMatch(pos -> NONE.equals(pos.getStoneState()))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void checkValidPlaceInput(Player player, Coordinate coordinate) throws GameException{
+        if (!isThisPlayersTurn(player)) {
+            throw new IllegalPlayerException();
+        } else if (!GamePhase.PLACE.equals(player.getPhase())) {
+            throw new InvalidPhaseException();
+        }
+
+        if (isCoordinateOccupied(coordinate)) {
+            throw new IllegalMoveException();
+        }
+    }
+    private void checkValidMoveInput(Player player, Coordinate from, Coordinate to) throws GameException{
+        if (!isThisPlayersTurn(player)) {
+            throw new IllegalPlayerException();
+        }
+
+        switch (player.getPhase()) {
+            case MOVE -> {
+                if (!isMovePossible(player,from,to) || !areAdjacentNodes(from,to)) {
+                    //Checks the StoneStates of from and to
+                    throw new IllegalMoveException();
+                }
+            }
+            case FLY -> {
+                if (!isMovePossible(player,from,to)) {
+                    throw new IllegalMoveException();
+                }
+            }
+            default -> throw new InvalidPhaseException();
+        }
+    }
+
+    private void checkValidTakeInput(Player player, Coordinate coordinate) throws GameException{
+        if (!isThisPlayersTurn(player)) {
+            throw new IllegalPlayerException();
+        }
+        if (!isNextOperationTake()) {
+            throw new IllegalMoveException();
+            //todo: maybe throw separate Exception
+        }
+        if (!getOtherPlayer(player).getColor().equals(getPositionAtCoordinate(coordinate).getStoneState())) {
+            //a player can only take stones from another player, not from himself or unoccupied stones
+            throw new IllegalMoveException();
+        }
+        if (isPartOfMill(getOtherPlayer(player),coordinate)) {
+            //stone to take can not be in a mill
+            throw  new IllegalMoveException();
+        }
+
+    }
+
+    /**
+     * use this method only in the players 'place' phase in order to place a stone on the field
+     * @param player that wants to place the stone
+     * @param coordinate where the stone is supposed to be placed
+     * @throws GameException if the operation was illegal.
+     */
+
+    public void placeStone(Player player, Coordinate coordinate) throws GameException {
+        checkValidPlaceInput(player,coordinate);
+        getPositionAtCoordinate(coordinate).setStoneState(player.getColor());
+        updateGamePhases();
+        player.addPLacedStone();
+
+        if (isPartOfMill(player,coordinate)) {
+            setNextPlayerToMove(player);
+            setNextOperationTake(true);
+        } else {
+            setNextPlayerToMove(getOtherPlayer(player));
+        }
+    }
+
+    /**
+     * use this method in the move and the fly phase in order to move stones
+     * @param player that wants to place the stone
+     * @param from the position the player wants to move
+     * @param to the position the player wants to move to
+     * @throws GameException if the operation was somehow illegal
+     */
+    public void moveStone(Player player, Coordinate from, Coordinate to) throws GameException {
+        checkValidMoveInput(player,from,to);
+        getPositionAtCoordinate(from).setStoneState(NONE);
+        getPositionAtCoordinate(to).setStoneState(player.getColor());
+        updateGamePhases();
+
+        if (isPartOfMill(player,to)) {
+            setNextPlayerToMove(player);
+            setNextOperationTake(true);
+        } else {
+            setNextPlayerToMove(getOtherPlayer(player));
+        }
+    }
+
+    /**
+     * use this method after the player has completed a mill and can tak a stone from the other player
+     * @param player player that wants to take the stone
+     * @param stoneToTake the stone he wants to take
+     * @throws GameException if the operation was somehow illegal
+     */
+    public void takeStone(Player player, Coordinate stoneToTake) throws GameException {
+        checkValidTakeInput(player,stoneToTake);
+        getPositionAtCoordinate(stoneToTake).setStoneState(NONE);
+        updateGamePhases();
+
+        setNextOperationTake(false);// will continue as per usual in the next move
+        setNextPlayerToMove(getOtherPlayer(player));
     }
 
 }
