@@ -8,6 +8,7 @@ import com.google.common.graph.GraphBuilder;
 import com.google.common.graph.ImmutableGraph;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.stream.Collectors;
 
@@ -207,7 +208,7 @@ public class Game {
         GamePhase oldPhase = player.getPhase();
         switch (oldPhase) {
             case PLACE -> {
-                if (player.getPlacedStones()==8) {
+                if (player.getPlacedStones()==9) {
                     player.setPhase(MOVE);
                 }
             }
@@ -233,14 +234,27 @@ public class Game {
         }
     }
 
-
+    private boolean areOnTheSameAxis(Position... positions) {
+        long distinctXCoordinates = Arrays.stream(positions)
+                .map(Position::getCoordinate)
+                .map(Coordinate::getX)
+                .distinct()
+                .count();
+        long distinctYCoordinates = Arrays.stream(positions)
+                .map(Position::getCoordinate)
+                .map(Coordinate::getY)
+                .distinct()
+                .count();
+        return distinctXCoordinates ==1 || distinctYCoordinates == 1;
+    }
 
     private boolean isPartOfMill(Player player, Coordinate coordinate) {
         for (Position neighbour : getField().adjacentNodes(getPositionAtCoordinate(coordinate))) {
-            //if one of the adjacent nodes has a neighbour of the same colour that is not the original one, they complete a mill
+            //if one of the adjacent nodes has a neighbour of the same colour that is not the original one and if they are in a straight line , they complete a mill
             if (getField().adjacentNodes(neighbour).stream()
                     .filter(pos -> player.getColor().equals(pos.getStoneState()))//Stones of the same colour
-                    .anyMatch(pos -> !pos.equals(neighbour)))//Neighbouring stone that is not the original one
+                    .anyMatch(pos -> !pos.equals(neighbour) && areOnTheSameAxis(pos,neighbour,getPositionAtCoordinate(coordinate))))
+                //Neighbouring stone that is not the original one and where all stones are in a straight line
             {
                 return true;
             }
@@ -315,12 +329,11 @@ public class Game {
      * @param coordinate where the stone is supposed to be placed
      * @throws GameException if the operation was illegal.
      */
-
     public void placeStone(Player player, Coordinate coordinate) throws GameException {
         checkValidPlaceInput(player,coordinate);
         getPositionAtCoordinate(coordinate).setStoneState(player.getColor());
-        updateGamePhases();
         player.addPLacedStone();
+        updateGamePhases();
 
         if (isPartOfMill(player,coordinate)) {
             setNextPlayerToMove(player);
@@ -352,7 +365,7 @@ public class Game {
     }
 
     /**
-     * use this method after the player has completed a mill and can tak a stone from the other player
+     * use this method after the player has completed a mill and can take a stone from the other player
      * @param player player that wants to take the stone
      * @param stoneToTake the stone he wants to take
      * @throws GameException if the operation was somehow illegal
