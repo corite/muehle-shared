@@ -252,6 +252,14 @@ public class Game {
         int x = coordinate.getX();
         int y = coordinate.getY();
         StoneState color = getPositionAtCoordinate(coordinate).getStoneState();
+        ArrayList<Position> xCoordinates = getField().nodes().stream().filter(p -> p.getStoneState().equals(color)).map(Position::getCoordinate).filter(p -> p.getX() == x).collect(toCollection(ArrayList::new));
+        ArrayList<Position> yCoordinates = getField().nodes().stream().filter(p -> p.getStoneState().equals(color)).map(Position::getCoordinate).filter(p -> p.getY() == y).collect(toCollection(ArrayList::new));
+        
+        if (xPositions.size() >= 3) {
+            for (Coordinate coordinate : xCoordinates) {
+                
+            }
+        }
 
         //get other stones with same x or same y
         //check whether there are at least 3 of stones with color in one orientation
