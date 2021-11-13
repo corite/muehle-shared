@@ -249,16 +249,14 @@ public class Game {
     }
 
     private boolean isPartOfMill(Player player, Coordinate coordinate) {
-        for (Position neighbour : getField().adjacentNodes(getPositionAtCoordinate(coordinate))) {
-            //if one of the adjacent nodes has a neighbour of the same colour that is not the original one and if they are in a straight line , they complete a mill
-            if (getField().adjacentNodes(neighbour).stream()
-                    .filter(pos -> player.getColor().equals(pos.getStoneState()))//Stones of the same colour
-                    .anyMatch(pos -> !pos.equals(neighbour) && areOnTheSameAxis(pos,neighbour,getPositionAtCoordinate(coordinate))))
-                //Neighbouring stone that is not the original one and where all stones are in a straight line
-            {
-                return true;
-            }
-        }
+        int x = coordinate.getX();
+        int y = coordinate.getY();
+        StoneState color = getPositionAtCoordinate(coordinate).getStoneState();
+
+        //get other stones with same x or same y
+        //check whether there are at least 3 of stones with color in one orientation
+        //check whether at least one of the three has the other two as neighbours
+
         return false;
     }
 
