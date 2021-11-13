@@ -252,9 +252,9 @@ public class Game {
         int x = coordinate.getX();
         int y = coordinate.getY();
         StoneState color = getPositionAtCoordinate(coordinate).getStoneState();
-        ArrayList<Coordinate> xCoordinates = getField().nodes().stream().filter(p -> p.getStoneState().equals(color)).map(Position::getCoordinate).filter(p -> p.getX() == x).collect(toCollection(ArrayList::new));
+        ArrayList<Coordinate> xCoordinates = getField().nodes().stream().filter(p -> p.getStoneState().equals(color)).map(Position::getCoordinate).filter(p -> p.getX() == x).collect(Collectors.toCollection(ArrayList::new));
         //nodes that are aligned with the input on the x-axis that have the right color
-        ArrayList<Coordinate> yCoordinates = getField().nodes().stream().filter(p -> p.getStoneState().equals(color)).map(Position::getCoordinate).filter(p -> p.getY() == y).collect(toCollection(ArrayList::new));
+        ArrayList<Coordinate> yCoordinates = getField().nodes().stream().filter(p -> p.getStoneState().equals(color)).map(Position::getCoordinate).filter(p -> p.getY() == y).collect(Collectors.toCollection(ArrayList::new));
         //nodes that are aligned with the input on the y-axis that have the right color
          
         if (xPositions.size() >= 3) {
