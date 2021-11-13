@@ -248,23 +248,30 @@ public class Game {
         return distinctXCoordinates ==1 || distinctYCoordinates == 1;
     }
 
-    private boolean isPartOfMill(Player player, Coordinate coordinate) {
+     boolean isPartOfMill(Player player, Coordinate coordinate) {
         int x = coordinate.getX();
         int y = coordinate.getY();
         StoneState color = getPositionAtCoordinate(coordinate).getStoneState();
-        ArrayList<Position> xCoordinates = getField().nodes().stream().filter(p -> p.getStoneState().equals(color)).map(Position::getCoordinate).filter(p -> p.getX() == x).collect(toCollection(ArrayList::new));
-        ArrayList<Position> yCoordinates = getField().nodes().stream().filter(p -> p.getStoneState().equals(color)).map(Position::getCoordinate).filter(p -> p.getY() == y).collect(toCollection(ArrayList::new));
-        
+        ArrayList<Coordinate> xCoordinates = getField().nodes().stream().filter(p -> p.getStoneState().equals(color)).map(Position::getCoordinate).filter(p -> p.getX() == x).collect(toCollection(ArrayList::new));
+        //nodes that are aligned with the input on the x-axis that have the right color
+        ArrayList<Coordinate> yCoordinates = getField().nodes().stream().filter(p -> p.getStoneState().equals(color)).map(Position::getCoordinate).filter(p -> p.getY() == y).collect(toCollection(ArrayList::new));
+        //nodes that are aligned with the input on the y-axis that have the right color
+         
         if (xPositions.size() >= 3) {
-            for (Coordinate coordinate : xCoordinates) {
-                
+            // if there are less than 3, the cannot be a mill
+            for (Coordinate c : xCoordinates) {
+                if (getField().adjacentNodes(getPositionAtCoordinate(c)).stream().filter(p -> p.getStoneState().equals(color)).map(Position::getCoordinate).filter(p -> p.getX() == x).count() >= 2) {
+                    return true;
+                }
             }
         }
-
-        //get other stones with same x or same y
-        //check whether there are at least 3 of stones with color in one orientation
-        //check whether at least one of the three has the other two as neighbours
-
+        if (yPositions.size() >= 3) {
+            for (Coordinate c : yCoordinates) {
+                if (getField().adjacentNodes(getPositionAtCoordinate(c)).stream().filter(p -> p.getStoneState().equals(color)).map(Position::getCoordinate).filter(p -> p.getY() == y).count() >= 2) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
