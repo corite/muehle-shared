@@ -257,7 +257,7 @@ public class Game {
         ArrayList<Coordinate> yCoordinates = getField().nodes().stream().filter(p -> p.getStoneState().equals(color)).map(Position::getCoordinate).filter(p -> p.getY() == y).collect(Collectors.toCollection(ArrayList::new));
         //nodes that are aligned with the input on the y-axis that have the right color
          
-        if (xPositions.size() >= 3) {
+        if (xCoordinates.size() >= 3) {
             // if there are less than 3, the cannot be a mill
             for (Coordinate c : xCoordinates) {
                 if (getField().adjacentNodes(getPositionAtCoordinate(c)).stream().filter(p -> p.getStoneState().equals(color)).map(Position::getCoordinate).filter(p -> p.getX() == x).count() >= 2) {
@@ -265,7 +265,7 @@ public class Game {
                 }
             }
         }
-        if (yPositions.size() >= 3) {
+        if (yCoordinates.size() >= 3) {
             for (Coordinate c : yCoordinates) {
                 if (getField().adjacentNodes(getPositionAtCoordinate(c)).stream().filter(p -> p.getStoneState().equals(color)).map(Position::getCoordinate).filter(p -> p.getY() == y).count() >= 2) {
                     return true;
