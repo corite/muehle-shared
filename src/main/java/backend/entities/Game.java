@@ -29,7 +29,7 @@ public class Game {
         this.nextPlayerToMove = getStartPlayer();
     }
 
-    private ImmutableGraph<Position> getField() {
+    public ImmutableGraph<Position> getField() {
         return field;
     }
 
