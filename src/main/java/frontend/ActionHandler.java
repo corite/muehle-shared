@@ -13,8 +13,8 @@ import java.awt.event.ActionListener;
 
 public class ActionHandler implements ActionListener {
 
-    Logger logger = LoggerFactory.getLogger(getClass());
-    static Button tmp = null;
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+    private static Button tmp = null;
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -27,10 +27,12 @@ public class ActionHandler implements ActionListener {
                     if (!Gui.getGame().isNextOperationTake()) {
                         Gui.getGame().placeStone(Gui.getGame().getNextPlayerToMove(), ((Button) e.getSource()).getCoordinate());
                         logger.debug("Stein gesetzt");
+                    } else{
+                        logger.debug("Ungültiger Zug");
                     }
                 } catch (InvalidPhaseException invalidPlacePhaseException){
                     try{
-                        if (Gui.getGame().getPositionAtCoordinate(((Button) e.getSource()).getCoordinate()).getStoneState().equals(Gui.getGame().getNextPlayerToMove().getColor())) {
+                        if (tmp == null){
                             tmp = ((Button) e.getSource());
                             logger.debug("tmp gesetzt");
                         } else{
@@ -41,15 +43,24 @@ public class ActionHandler implements ActionListener {
                     } catch (InvalidPhaseException invalidMovePhaseException){
                         logger.debug("Ungültige Zugphase!");
                     } catch (IllegalMoveException illegalMoveException){
-                        logger.debug("Ungültiger Zug");
+                        if (Gui.getGame().getPositionAtCoordinate(((Button) e.getSource()).getCoordinate()).getStoneState() != StoneState.NONE){
+                            tmp = ((Button) e.getSource());
+                            logger.debug("tmp gesetzt");
+                            logger.debug("Ungültiger Zug");
+                        }
+                    } catch (IllegalPlayerException illegalPlayerException){
+                        logger.debug("Ungültiger Player");
+                    }
                     } catch (IllegalPlayerException illegalPlayerException){
                         logger.debug("Nicht dein Stein");
+                    }catch (IllegalMoveException illegalMoveException){
+                        logger.debug("Ungültiger Zug");
                     }
-                    logger.debug("Ungültige Zugphase!");
-                } catch (IllegalMoveException illegalMoveException){
-                    logger.debug("Ungültiger Zug");
                 }
             }
         }
+
+    public static Button getTmp() {
+        return tmp;
     }
 }

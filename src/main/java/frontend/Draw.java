@@ -83,9 +83,9 @@ public class Draw extends JLabel {
                     g.drawOval(Gui.getBtn(i).getX()+5, Gui.getBtn(i).getY()+5, 30, 30);
                     g.drawOval(Gui.getBtn(i).getX()+10, Gui.getBtn(i).getY()+10, 20, 20);
                 }
-                if (ActionHandler.tmp != null){
+                if (ActionHandler.getTmp() != null){
                     g.setColor(Color.RED);
-                    g.drawOval(ActionHandler.tmp.getX(), ActionHandler.tmp.getY(), 40, 40);
+                    g.drawOval(ActionHandler.getTmp().getX(), ActionHandler.getTmp().getY(), 40, 40);
                 }
             }
         }

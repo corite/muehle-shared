@@ -41,9 +41,7 @@ public class Gui {
         //create buttons
         ArrayList<Coordinate> coordinates = game.getField().nodes().stream().map(Position:: getCoordinate).collect(Collectors.toCollection(ArrayList::new));
         coordinates.sort(((o1, o2) -> o1.getY() == o2.getY() ? Integer.compare(o1.getX(), o2.getX()) : -Integer.compare(o1.getY(),o2.getY())));
-        System.out.println(coordinates);
         for (int i=0; i< btn.length; i++){
-            System.out.println(coordinates.get(i));
             btn[i] = new Button(coordinates.get(i));
             btn[i].setVisible(true);
             btn[i].addActionListener(new ActionHandler());
