@@ -1,10 +1,10 @@
 package frontend;
 
-import backend.entities.Coordinate;
+import backend.entities.GamePhase;
+import backend.entities.Player;
 import backend.entities.StoneState;
+import backend.exceptions.GameException;
 import backend.exceptions.IllegalMoveException;
-import backend.exceptions.IllegalPlayerException;
-import backend.exceptions.InvalidPhaseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,47 +18,51 @@ public class ActionHandler implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() instanceof Button){
-            try{
-                Gui.getGame().takeStone(Gui.getGame().getNextPlayerToMove(), ((Button) e.getSource()).getCoordinate());
-                logger.debug("Stein genommen");
-            } catch (IllegalMoveException illegalTakeException){
-                try{
-                    if (!Gui.getGame().isNextOperationTake()) {
-                        Gui.getGame().placeStone(Gui.getGame().getNextPlayerToMove(), ((Button) e.getSource()).getCoordinate());
-                        logger.debug("Stein gesetzt");
-                    } else{
-                        logger.debug("Ungültiger Zug");
-                    }
-                } catch (InvalidPhaseException invalidPlacePhaseException){
-                    try{
-                        if (tmp == null){
-                            tmp = ((Button) e.getSource());
-                            logger.debug("tmp gesetzt");
-                        } else{
-                            Gui.getGame().moveStone(Gui.getGame().getNextPlayerToMove(), tmp.getCoordinate(), ((Button) e.getSource()).getCoordinate());
-                            tmp = null;
-                            logger.debug("Stein gezogen");
+
+        if (e.getSource() instanceof Button) {
+            Button button = (Button) e.getSource();
+            Player player = Gui.getGame().getNextPlayerToMove();
+            GamePhase phase = player.getPhase();
+
+            if (Gui.getGame().isNextOperationTake()) {
+                try {
+                    Gui.getGame().takeStone(player, button.getCoordinate());
+                    logger.debug("Stein genommen");
+                } catch (IllegalMoveException ex) {
+                    logger.warn("Illegal Take", ex);
+                }
+            } else {
+                try {
+                    switch (phase) {
+
+                        case PLACE -> {
+                            Gui.getGame().placeStone(player, button.getCoordinate());
+                            logger.debug("Stein gesetzt");
                         }
-                    } catch (InvalidPhaseException invalidMovePhaseException){
-                        logger.debug("Ungültige Zugphase!");
-                    } catch (IllegalMoveException illegalMoveException){
-                        if (Gui.getGame().getPositionAtCoordinate(((Button) e.getSource()).getCoordinate()).getStoneState() != StoneState.NONE){
-                            tmp = ((Button) e.getSource());
-                            logger.debug("tmp gesetzt");
-                            logger.debug("Ungültiger Zug");
+
+                        case MOVE, FLY -> {
+                            if (tmp == null || !Gui.getGame().getPositionAtCoordinate(button.getCoordinate()).getStoneState().equals(StoneState.NONE)) {
+                                tmp = button;
+                                logger.debug("tmp gesetzt");
+                            } else {
+                                Gui.getGame().moveStone(player, tmp.getCoordinate(), button.getCoordinate());
+                                tmp = null;
+                                logger.debug("Stein gezogen");
+                            }
                         }
-                    } catch (IllegalPlayerException illegalPlayerException){
-                        logger.debug("Ungültiger Player");
+
+                        case WON, LOST -> {
+                            //display something nice
+                        }
                     }
-                    } catch (IllegalPlayerException illegalPlayerException){
-                        logger.debug("Nicht dein Stein");
-                    }catch (IllegalMoveException illegalMoveException){
-                        logger.debug("Ungültiger Zug");
-                    }
+                } catch (GameException ex) {
+                    logger.warn("Illegal Move", ex);
                 }
             }
+
+
         }
+    }
 
     public static Button getTmp() {
         return tmp;
