@@ -222,7 +222,7 @@ public class Game {
                 }
             }
             case FLY -> {
-                if (getPositions(player).size()==0) {
+                if (getPositions(player).size()<=2) {
                     player.setPhase(LOST);
                     getOtherPlayer(player).setPhase(WON);
                 }
@@ -234,19 +234,6 @@ public class Game {
         }
     }
 
-    private boolean areOnTheSameAxis(Position... positions) {
-        long distinctXCoordinates = Arrays.stream(positions)
-                .map(Position::getCoordinate)
-                .map(Coordinate::getX)
-                .distinct()
-                .count();
-        long distinctYCoordinates = Arrays.stream(positions)
-                .map(Position::getCoordinate)
-                .map(Coordinate::getY)
-                .distinct()
-                .count();
-        return distinctXCoordinates ==1 || distinctYCoordinates == 1;
-    }
 
      boolean isPartOfMill(Coordinate coordinate) {
         return isPartOfHorizontalMill(coordinate) || isPartOfVerticalMill(coordinate);
@@ -349,11 +336,10 @@ public class Game {
             //a player can only take stones from another player, not from himself or unoccupied stones
             throw new IllegalMoveException();
         }
-        if (isPartOfMill(coordinate)) {
-            //stone to take can not be in a mill
+        if (isPartOfMill(coordinate) && !(getOtherPlayer(player).getPhase().equals(FLY))) {
+            //stone to take can not be in a mill, except the other player is in the FLY-phase
             throw  new IllegalMoveException();
         }
-
     }
 
     /**
