@@ -11,7 +11,6 @@ public class Main {
         logger.info("Also Hello");
 
         new Gui();
-        System.out.println(Gui.getGame().getPositionAtCoordinate(new Coordinate(0,3)));
 
 
         //2 threads for backend (later networking) and frontend should be spawned here

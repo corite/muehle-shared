@@ -70,25 +70,22 @@ public class Draw extends JLabel {
 
         for (int i=0; i<=23;i++){
             if (Gui.getBtn(i) != null) {
-<<<<<<< HEAD
                 if (Gui.getGame().getPositionAtCoordinate(Gui.getBtn(i).getCoordinate()).getStoneState().equals(StoneState.BLACK)) {
                     g.setColor(Color.BLACK);
                     g.fillOval(Gui.getBtn(i).getX(), Gui.getBtn(i).getY(), 40, 40);
                     g.setColor(Color.WHITE);
                     g.drawOval(Gui.getBtn(i).getX()+5, Gui.getBtn(i).getY()+5, 30, 30);
+                    g.drawOval(Gui.getBtn(i).getX()+10, Gui.getBtn(i).getY()+10, 20, 20);
                 } else if (Gui.getGame().getPositionAtCoordinate(Gui.getBtn(i).getCoordinate()).getStoneState().equals(StoneState.WHITE)) {
                     g.setColor(Color.WHITE);
                     g.fillOval(Gui.getBtn(i).getX(), Gui.getBtn(i).getY(), 40, 40);
                     g.setColor(Color.BLACK);
                     g.drawOval(Gui.getBtn(i).getX()+5, Gui.getBtn(i).getY()+5, 30, 30);
-=======
-                if (Gui.getBtn(i).getState() == StoneState.BLACK) {
-                    g.setColor(Color.BLACK);
-                    g.fillOval(Gui.getBtn(i).getX(), Gui.getBtn(i).getY(), 40, 40);
-                } else if (Gui.getBtn(i).getState() == StoneState.WHITE) {
-                    g.setColor(Color.WHITE);
-                    g.fillOval(Gui.getBtn(i).getX(), Gui.getBtn(i).getY(), 40, 40);
->>>>>>> 87b657703dc6f089c04816708060f6f575d950e5
+                    g.drawOval(Gui.getBtn(i).getX()+10, Gui.getBtn(i).getY()+10, 20, 20);
+                }
+                if (ActionHandler.tmp != null){
+                    g.setColor(Color.RED);
+                    g.drawOval(ActionHandler.tmp.getX(), ActionHandler.tmp.getY(), 40, 40);
                 }
             }
         }
