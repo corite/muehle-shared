@@ -248,31 +248,51 @@ public class Game {
         return distinctXCoordinates ==1 || distinctYCoordinates == 1;
     }
 
-     boolean isPartOfMill(Player player, Coordinate coordinate) {
+     boolean isPartOfMill(Coordinate coordinate) {
+        return isPartOfHorizontalMill(coordinate) || isPartOfVerticalMill(coordinate);
+    }
+    private boolean isPartOfHorizontalMill(Coordinate coordinate) {
         int x = coordinate.getX();
         int y = coordinate.getY();
-        StoneState color = getPositionAtCoordinate(coordinate).getStoneState();
-        ArrayList<Coordinate> xCoordinates = getField().nodes().stream().filter(p -> p.getStoneState().equals(color)).map(Position::getCoordinate).filter(p -> p.getX() == x).collect(Collectors.toCollection(ArrayList::new));
-        //nodes that are aligned with the input on the x-axis that have the right color
-        ArrayList<Coordinate> yCoordinates = getField().nodes().stream().filter(p -> p.getStoneState().equals(color)).map(Position::getCoordinate).filter(p -> p.getY() == y).collect(Collectors.toCollection(ArrayList::new));
-        //nodes that are aligned with the input on the y-axis that have the right color
-         
-        if (xCoordinates.size() >= 3) {
-            // if there are less than 3, the cannot be a mill
-            for (Coordinate c : xCoordinates) {
-                if (getField().adjacentNodes(getPositionAtCoordinate(c)).stream().filter(p -> p.getStoneState().equals(color)).map(Position::getCoordinate).filter(p -> p.getX() == x).count() >= 2) {
-                    return true;
-                }
-            }
+        StoneState stoneState = getPositionAtCoordinate(coordinate).getStoneState();
+
+        ArrayList<Coordinate> row = getField().nodes().stream()
+                .filter(p -> p.getCoordinate().getY() == y)
+                .filter(p -> p.getStoneState().equals(stoneState))
+                .map(Position::getCoordinate)
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        if (y!= 0) {
+            //then there are only 3 stones on each line, if there is a mill they all have to have the same stoneState
+            return row.size() == 3;
+        } else if (x<0) {
+            // if y==0 , the mill can either be on the right of the center or on the left
+            return row.stream().filter(c -> c.getX() < 0).count() == 3;
+        } else {
+            return row.stream().filter(c -> c.getX() > 0).count() == 3;
         }
-        if (yCoordinates.size() >= 3) {
-            for (Coordinate c : yCoordinates) {
-                if (getField().adjacentNodes(getPositionAtCoordinate(c)).stream().filter(p -> p.getStoneState().equals(color)).map(Position::getCoordinate).filter(p -> p.getY() == y).count() >= 2) {
-                    return true;
-                }
-            }
+    }
+
+    private boolean isPartOfVerticalMill( Coordinate coordinate) {
+        int x = coordinate.getX();
+        int y = coordinate.getY();
+        StoneState stoneState = getPositionAtCoordinate(coordinate).getStoneState();
+
+        ArrayList<Coordinate> row = getField().nodes().stream()
+                .filter(p -> p.getCoordinate().getX() == x)
+                .filter(p -> p.getStoneState().equals(stoneState))
+                .map(Position::getCoordinate)
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        if (x!= 0) {
+            //then there are only 3 stones on each line, if there is a mill they all have to have the same stoneState
+            return row.size() == 3;
+        } else if (y<0) {
+            // if x==0 , the mill can either be above or under the center
+            return row.stream().filter(c -> c.getY() < 0).count() == 3;
+        } else {
+            return row.stream().filter(c -> c.getY() > 0).count() == 3;
         }
-        return false;
     }
 
     private boolean isAbleToMove(Player player) {
@@ -329,7 +349,7 @@ public class Game {
             //a player can only take stones from another player, not from himself or unoccupied stones
             throw new IllegalMoveException();
         }
-        if (isPartOfMill(getOtherPlayer(player),coordinate)) {
+        if (isPartOfMill(coordinate)) {
             //stone to take can not be in a mill
             throw  new IllegalMoveException();
         }
@@ -348,7 +368,7 @@ public class Game {
         player.addPLacedStone();
         updateGamePhases();
 
-        if (isPartOfMill(player,coordinate)) {
+        if (isPartOfMill(coordinate)) {
             setNextPlayerToMove(player);
             setNextOperationTake(true);
         } else {
@@ -369,7 +389,7 @@ public class Game {
         getPositionAtCoordinate(to).setStoneState(player.getColor());
         updateGamePhases();
 
-        if (isPartOfMill(player,to)) {
+        if (isPartOfMill(to)) {
             setNextPlayerToMove(player);
             setNextOperationTake(true);
         } else {
