@@ -15,60 +15,60 @@ public class Draw extends JLabel {
 
         //outer rectangle
 
-        g.drawRect(2*this.getWidth()/20,2*this.getHeight()/20, 16*this.getWidth()/20,16*this.getHeight()/20);
+        g.drawRect(50,50, 600,600);
 
         //middle rectangle
 
-        g.drawRect(5*this.getWidth()/20,5*this.getHeight()/20,10*this.getWidth()/20,10*this.getHeight()/20);
+        g.drawRect(150,150, 400,400);
 
         //inner rectangle
 
-        g.drawRect(8*this.getWidth()/20, 8*this.getHeight()/20, 4*this.getWidth()/20, 4*this.getHeight()/20);
+        g.drawRect(250, 250, 200, 200);
 
         //lines in between
 
-        g.drawLine(this.getWidth()/2,2*this.getHeight()/20,this.getWidth()/2,8*this.getHeight()/20);
-        g.drawLine(this.getWidth()/2,12*this.getHeight()/20,this.getWidth()/2,18*this.getHeight()/20);
-        g.drawLine(2*this.getWidth()/20,this.getHeight()/2,8*this.getWidth()/20,this.getHeight()/2);
-        g.drawLine(12*this.getWidth()/20,this.getHeight()/2,18*this.getWidth()/20,this.getHeight()/2);
+        g.drawLine(50,350,250, 350);
+        g.drawLine(450,350,650,350);
+        g.drawLine(350,50,350,250);
+        g.drawLine(350,450,350,650);
 
         //filled rectangles on the outer rectangle top and bottom line
 
-        for (int i=2; i<=18;i+=+8){
-            for (int j=2; j<=18;j+=16){
-                g.fillRect(i*this.getWidth()/20-5,j*this.getHeight()/20-5,10,10);
+        for (int i=0; i<=1;i++){
+            for (int j=0; j<=2;j++){
+                g.fillRect(50 + j*300-5,50 + i*600-5,10,10);
             }
         }
 
         //filled rectangles on the middle rectangle top and bottom line
 
-        for (int i=5; i<=15;i+=+5){
-            for (int j=5; j<=15;j+=10){
-                g.fillRect(i*this.getWidth()/20-5,j*this.getHeight()/20-5,10,10);
+        for (int i=0; i<=1;i++){
+            for (int j=0; j<=2;j++){
+                g.fillRect(150 + j*200-5,150 + i*400-5,10,10);
             }
         }
 
         //filled rectangles on the inner rectangle top and bottom line
 
-        for (int i=8; i<=12;i+=+2){
-            for (int j=8; j<=12;j+=4){
-                g.fillRect(i*this.getWidth()/20-5,j*this.getHeight()/20-5,10,10);
+        for (int i=0; i<=1;i++){
+            for (int j=0; j<=2;j++){
+                g.fillRect(250 + j*100-5,250 + i*200-5,10,10);
             }
         }
 
         //filled rectangles on the middle line, left side
 
-        for (int i=2; i<=8;i+=+3){
-            g.fillRect(i*this.getWidth()/20-5,this.getHeight()/2-5,10,10);
+        for (int i=0; i<=2;i++){
+            g.fillRect(50 + i*100-5,350-5,10,10);
         }
 
         //filled rectangles on the middle line, right side
 
-        for (int i=12; i<=18;i+=+3){
-            g.fillRect(i*this.getWidth()/20-5,this.getHeight()/2-5,10,10);
+        for (int i=0; i<=2;i++){
+            g.fillRect(450 + i*100-5,350-5,10,10);
         }
 
-        for (int i=0; i<=23;i++){
+/*        for (int i=0; i<=23;i++){
             if (Gui.getBtn(i) != null) {
                 if (Gui.getGame().getPositionAtCoordinate(Gui.getBtn(i).getCoordinate()).getStoneState().equals(StoneState.BLACK)) {
                     g.setColor(Color.BLACK);
@@ -88,7 +88,7 @@ public class Draw extends JLabel {
                     g.drawOval(ActionHandler.getTmp().getX(), ActionHandler.getTmp().getY(), 40, 40);
                 }
             }
-        }
+        }*/
         repaint();
     }
 }

@@ -1,5 +1,7 @@
 package backend.entities;
 
+import java.util.Objects;
+
 public class Player {
     private final String name;
     private final StoneState color;
@@ -44,20 +46,13 @@ public class Player {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Player player = (Player) o;
-
-        if (!getName().equals(player.getName())) return false;
-        if (getColor() != player.getColor()) return false;
-        return getPhase() == player.getPhase();
+        return getName().equals(player.getName()) && getColor() == player.getColor();
     }
 
     @Override
     public int hashCode() {
-        int result = getName().hashCode();
-        result = 31 * result + getColor().hashCode();
-        result = 31 * result + getPhase().hashCode();
-        return result;
+        return Objects.hash(getName(), getColor());
     }
 
     @Override
