@@ -22,7 +22,7 @@ public class Gui {
         //creating window and window settings
         frame = new JFrame("Muehle");
         frame.setBounds(0,0,1000, 750);
-        frame.getContentPane().setBackground(Color.LIGHT_GRAY);
+        frame.getContentPane().setBackground(Color.decode("#FDFD96"));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
         frame.setResizable(false);
