@@ -245,7 +245,7 @@ public class Game {
     }
 
 
-     boolean isPartOfMill(Coordinate coordinate) {
+    private boolean isPartOfMill(Coordinate coordinate) {
         return isPartOfHorizontalMill(coordinate) || isPartOfVerticalMill(coordinate);
     }
     private boolean isPartOfHorizontalMill(Coordinate coordinate) {
