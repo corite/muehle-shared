@@ -76,16 +76,19 @@ public class Draw extends JLabel {
                     g.setColor(Color.WHITE);
                     g.drawOval(Gui.getBtn(i).getX()+5, Gui.getBtn(i).getY()+5, 30, 30);
                     g.drawOval(Gui.getBtn(i).getX()+10, Gui.getBtn(i).getY()+10, 20, 20);
+                    repaint();
                 } else if (Gui.getGame().getPositionAtCoordinate(Gui.getBtn(i).getCoordinate()).getStoneState().equals(StoneState.WHITE)) {
                     g.setColor(Color.WHITE);
                     g.fillOval(Gui.getBtn(i).getX(), Gui.getBtn(i).getY(), 40, 40);
                     g.setColor(Color.BLACK);
                     g.drawOval(Gui.getBtn(i).getX()+5, Gui.getBtn(i).getY()+5, 30, 30);
                     g.drawOval(Gui.getBtn(i).getX()+10, Gui.getBtn(i).getY()+10, 20, 20);
+                    repaint();
                 }
                 if (ActionHandler.getTmp() != null){
                     g.setColor(Color.RED);
                     g.drawOval(ActionHandler.getTmp().getX(), ActionHandler.getTmp().getY(), 40, 40);
+                    repaint();
                 }
             }
         }
