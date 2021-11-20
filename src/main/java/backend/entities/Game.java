@@ -292,6 +292,15 @@ public class Game {
         return false;
     }
 
+    private boolean hasAllStonesInMills(Player player) {
+        for(Position position : getPositions(player)) {
+            if (!isPartOfMill(position.getCoordinate())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     private void checkValidPlaceInput(Player player, Coordinate coordinate) throws GameException{
         if (!isThisPlayersTurn(player)) {
             throw new IllegalPlayerException();
@@ -336,7 +345,7 @@ public class Game {
             //a player can only take stones from another player, not from himself or unoccupied stones
             throw new IllegalMoveException();
         }
-        if (isPartOfMill(coordinate) && !(getOtherPlayer(player).getPhase().equals(FLY))) {
+        if (isPartOfMill(coordinate) && !hasAllStonesInMills(getOtherPlayer(player))) {
             //stone to take can not be in a mill, except the other player is in the FLY-phase
             throw  new IllegalMoveException();
         }
