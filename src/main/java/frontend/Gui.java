@@ -25,6 +25,7 @@ public class Gui {
         frame.getContentPane().setBackground(Color.LIGHT_GRAY);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
+        frame.setResizable(false);
 
         //creating JLabel from draw class and draw settings
         draw = new Draw();
@@ -45,15 +46,12 @@ public class Gui {
             btn[i] = new Button(coordinates.get(i));
             btn[i].setVisible(true);
             btn[i].addActionListener(new ActionHandler());
-            btn[i].setFocusPainted(true);
-            btn[i].setContentAreaFilled(true);
+            btn[i].setFocusPainted(false);
+            btn[i].setContentAreaFilled(false);
             btn[i].setBorder(null);
             frame.add(btn[i]);
         }
         this.placeBtn();
-
-        //catch window resize event
-
     }
 
     public static Game getGame() {

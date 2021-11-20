@@ -68,7 +68,7 @@ public class Draw extends JLabel {
             g.fillRect(450 + i*100-5,350-5,10,10);
         }
 
-/*        for (int i=0; i<=23;i++){
+        for (int i=0; i<=23;i++){
             if (Gui.getBtn(i) != null) {
                 if (Gui.getGame().getPositionAtCoordinate(Gui.getBtn(i).getCoordinate()).getStoneState().equals(StoneState.BLACK)) {
                     g.setColor(Color.BLACK);
@@ -88,7 +88,6 @@ public class Draw extends JLabel {
                     g.drawOval(ActionHandler.getTmp().getX(), ActionHandler.getTmp().getY(), 40, 40);
                 }
             }
-        }*/
-        repaint();
+        }
     }
 }
