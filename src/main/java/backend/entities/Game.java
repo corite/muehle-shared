@@ -29,7 +29,7 @@ public class Game {
         this.nextPlayerToMove = getStartPlayer();
     }
 
-    private ImmutableGraph<Position> getField() {
+    public ImmutableGraph<Position> getField() {
         return field;
     }
 
@@ -154,7 +154,7 @@ public class Game {
         return this.getNextPlayerToMove().equals(player);
     }
 
-    private Position getPositionAtCoordinate(Coordinate coordinate) {
+    public Position getPositionAtCoordinate(Coordinate coordinate) {
         return getField()
                 .nodes()
                 .stream()

@@ -1,4 +1,6 @@
-import frontend.GUI;
+import backend.entities.Coordinate;
+import frontend.Gui;
+import org.checkerframework.checker.units.qual.C;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -8,8 +10,7 @@ public class Main {
         System.out.println("Hello World");
         logger.info("Also Hello");
 
-        new GUI();
-
+        new Gui();
 
 
         //2 threads for backend (later networking) and frontend should be spawned here

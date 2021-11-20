@@ -1,5 +1,7 @@
 package backend.entities;
 
+import java.util.Objects;
+
 public class Position {
 
     private Coordinate coordinate;
@@ -30,23 +32,17 @@ public class Position {
         return coordinate;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Position position = (Position) o;
-
-        if (!getCoordinate().equals(position.getCoordinate())) return false;
-        return getStoneState() == position.getStoneState();
+        return getCoordinate().equals(position.getCoordinate());
     }
 
     @Override
     public int hashCode() {
-        int result = getCoordinate().hashCode();
-        result = 31 * result + getStoneState().hashCode();
-        return result;
+        return Objects.hash(getCoordinate());
     }
 
     @Override
