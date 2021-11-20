@@ -6,9 +6,10 @@ import backend.exceptions.InvalidPhaseException;
 import backend.exceptions.IllegalPlayerException;
 import com.google.common.graph.GraphBuilder;
 import com.google.common.graph.ImmutableGraph;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.stream.Collectors;
 
@@ -21,6 +22,7 @@ public class Game {
     private final Player player2;
     private Player nextPlayerToMove;
     private boolean isNextOperationTake;
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     public Game(Player player1, Player player2) {
         this.player1 = player1;
@@ -210,32 +212,40 @@ public class Game {
             case PLACE -> {
                 if (player.getPlacedStones()==9) {
                     player.setPhase(MOVE);
+                    logger.info("player {} is now in phase MOVE",player.getName());
                 }
             }
             case MOVE -> {
                 if (getPositions(player).size()<=3) {
                     player.setPhase(FLY);
+                    logger.info("player {} is now in phase FLY",player.getName());
                 }
                 if (!isAbleToMove(player)) {
                     player.setPhase(LOST);
+                    logger.info("player {} is now in phase LOST",player.getName());
                     getOtherPlayer(player).setPhase(WON);
+                    logger.info("player {} is now in phase WON",getOtherPlayer(player).getName());
                 }
             }
             case FLY -> {
                 if (getPositions(player).size()<=2) {
                     player.setPhase(LOST);
+                    logger.info("player {} is now in phase LOST",player.getName());
                     getOtherPlayer(player).setPhase(WON);
+                    logger.info("player {} is now in phase WON",getOtherPlayer(player).getName());
                 }
                 if (!isAbleToMove(player)) {
                     player.setPhase(LOST);
+                    logger.info("player {} is now in phase LOST",player.getName());
                     getOtherPlayer(player).setPhase(WON);
+                    logger.info("player {} is now in phase WON",getOtherPlayer(player).getName());
                 }
             }
         }
     }
 
 
-     boolean isPartOfMill(Coordinate coordinate) {
+    private boolean isPartOfMill(Coordinate coordinate) {
         return isPartOfHorizontalMill(coordinate) || isPartOfVerticalMill(coordinate);
     }
     private boolean isPartOfHorizontalMill(Coordinate coordinate) {
@@ -292,6 +302,15 @@ public class Game {
         return false;
     }
 
+    private boolean hasAllStonesInMills(Player player) {
+        for(Position position : getPositions(player)) {
+            if (!isPartOfMill(position.getCoordinate())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     private void checkValidPlaceInput(Player player, Coordinate coordinate) throws GameException{
         if (!isThisPlayersTurn(player)) {
             throw new IllegalPlayerException();
@@ -303,6 +322,7 @@ public class Game {
             throw new IllegalMoveException();
         }
     }
+
     private void checkValidMoveInput(Player player, Coordinate from, Coordinate to) throws GameException{
         if (!isThisPlayersTurn(player)) {
             throw new IllegalPlayerException();
@@ -336,7 +356,7 @@ public class Game {
             //a player can only take stones from another player, not from himself or unoccupied stones
             throw new IllegalMoveException();
         }
-        if (isPartOfMill(coordinate) && !(getOtherPlayer(player).getPhase().equals(FLY))) {
+        if (isPartOfMill(coordinate) && !hasAllStonesInMills(getOtherPlayer(player))) {
             //stone to take can not be in a mill, except the other player is in the FLY-phase
             throw  new IllegalMoveException();
         }
@@ -360,6 +380,7 @@ public class Game {
         } else {
             setNextPlayerToMove(getOtherPlayer(player));
         }
+        logger.debug("player {} successfully placed stone at coordinate ({},{})",player.getName(),coordinate.getX(),coordinate.getY());
     }
 
     /**
@@ -381,6 +402,7 @@ public class Game {
         } else {
             setNextPlayerToMove(getOtherPlayer(player));
         }
+        logger.debug("player {} successfully moved stone from ({},{}) to ({},{})",player.getName(),from.getX(),from.getY(),to.getX(),to.getY());
     }
 
     /**
@@ -396,6 +418,7 @@ public class Game {
 
         setNextOperationTake(false);// will continue as per usual in the next move
         setNextPlayerToMove(getOtherPlayer(player));
+        logger.debug("player {} successfully took stone at coordinate ({},{})",player.getName(),stoneToTake.getX(),stoneToTake.getY());
     }
 
     public void printField() {
