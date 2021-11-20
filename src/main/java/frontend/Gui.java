@@ -45,7 +45,7 @@ public class Gui {
         for (int i=0; i< btn.length; i++){
             btn[i] = new Button(coordinates.get(i));
             btn[i].setVisible(true);
-            btn[i].addActionListener(new ActionHandler());
+            btn[i].addActionListener(new ActionHandler(draw));
             btn[i].setFocusPainted(false);
             btn[i].setContentAreaFilled(false);
             btn[i].setBorder(null);

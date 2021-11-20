@@ -15,6 +15,11 @@ public class ActionHandler implements ActionListener {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private static Button tmp = null;
+    private final Draw draw;
+
+    public ActionHandler(Draw draw) {
+        this.draw = draw;
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -50,17 +55,15 @@ public class ActionHandler implements ActionListener {
                                 logger.debug("Stein gezogen");
                             }
                         }
-
                         case WON, LOST -> {
                             //display something nice
                         }
                     }
+                    draw.repaint();
                 } catch (GameException ex) {
                     logger.warn("Illegal Move", ex);
                 }
             }
-
-
         }
     }
 
