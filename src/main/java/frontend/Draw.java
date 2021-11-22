@@ -1,5 +1,6 @@
 package frontend;
 
+import backend.entities.GamePhase;
 import backend.entities.StoneState;
 
 import javax.swing.*;
@@ -76,6 +77,7 @@ public class Draw extends JLabel {
                     g.setColor(Color.WHITE);
                     g.drawOval(Gui.getBtn(i).getX()+5, Gui.getBtn(i).getY()+5, 30, 30);
                     g.drawOval(Gui.getBtn(i).getX()+10, Gui.getBtn(i).getY()+10, 20, 20);
+                    g.setColor(Color.BLACK);
                 } else if (Gui.getGame().getPositionAtCoordinate(Gui.getBtn(i).getCoordinate()).getStoneState().equals(StoneState.WHITE)) {
                     g.setColor(Color.WHITE);
                     g.fillOval(Gui.getBtn(i).getX(), Gui.getBtn(i).getY(), 40, 40);
@@ -86,8 +88,36 @@ public class Draw extends JLabel {
                 if (ActionHandler.getTmp() != null){
                     g.setColor(Color.RED);
                     g.drawOval(ActionHandler.getTmp().getX(), ActionHandler.getTmp().getY(), 40, 40);
+                    g.setColor(Color.BLACK);
                 }
             }
+        }
+        g.setFont(g.getFont().deriveFont(g.getFont().getSize() * 1.4F));
+        if (Gui.getGame().getPlayer1().getPhase().equals(GamePhase.WON)) {
+            g.drawString(Gui.getGame().getPlayer1().getName() + " hat gewonnen.", 700, 50);
+        }
+        else if (Gui.getGame().getPlayer2().getPhase().equals(GamePhase.WON)) {
+            g.drawString(Gui.getGame().getPlayer2().getName() + " hat gewonnen", 700, 50);
+        }
+        else {
+            g.drawString(Gui.getGame().getNextPlayerToMove().getName() + " ist am Zug.", 700, 50);
+        }
+
+        for (int i=0; i<=8-Gui.getGame().getPlayer1().getPlacedStones(); i++){
+            g.setColor(Color.WHITE);
+            g.fillOval(700, 600-i*50,40,40);
+            g.setColor(Color.BLACK);
+            g.drawOval(700+5, 600-i*50+5, 30, 30);
+            g.drawOval(700+10, 600-i*50+10, 20, 20);
+        }
+
+        for (int i=0; i<=8-Gui.getGame().getPlayer2().getPlacedStones(); i++){
+            g.setColor(Color.BLACK);
+            g.fillOval(750, 600-i*50,40,40);
+            g.setColor(Color.WHITE);
+            g.drawOval(750+5, 600-i*50+5, 30, 30);
+            g.drawOval(750+10, 600-i*50+10, 20, 20);
+            g.setColor(Color.BLACK);
         }
     }
 }

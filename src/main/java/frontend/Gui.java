@@ -27,17 +27,24 @@ public class Gui {
         frame.setVisible(true);
         frame.setResizable(false);
 
+        String name1 = "";
+        String name2 = "";
+        while (name1 == null || name1.equals("")){
+            name1 = JOptionPane.showInputDialog(frame,"Enter username for Player 1!");
+        }
+        while (name2 == null || name2.equals("")){
+            name2 = JOptionPane.showInputDialog(frame,"Enter username for Player 2!");
+        }
+        Player player1 = new Player(name1, StoneState.WHITE);
+        Player player2 = new Player(name2, StoneState.BLACK);
+        game = new Game(player1, player2);
+
         //creating JLabel from draw class and draw settings
         draw = new Draw();
         draw.setBounds(0,0,1000,750);
         draw.setVisible(true);
         frame.add(draw);
-
-        String name1 = JOptionPane.showInputDialog(frame,"Enter username for Player 1!");
-        String name2 = JOptionPane.showInputDialog(frame,"Enter username for Player 2!");
-        Player player1 = new Player(name1, StoneState.WHITE);
-        Player player2 = new Player(name2, StoneState.BLACK);
-        game = new Game(player1, player2);
+        getDraw().repaint();
 
         //create buttons
         ArrayList<Coordinate> coordinates = game.getField().nodes().stream().map(Position:: getCoordinate).collect(Collectors.toCollection(ArrayList::new));
