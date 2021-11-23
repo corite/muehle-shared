@@ -33,7 +33,7 @@ public class ActionHandler implements ActionListener {
                 try {
                     Gui.getGame().takeStone(player, button.getCoordinate());
                     Gui.getDraw().repaint();
-                    logger.debug("Stein genommen");
+                    logger.debug("took Stone from coordinate " + button.getCoordinate());
                 } catch (IllegalMoveException ex) {
                     logger.warn("Illegal Take", ex);
                 }
@@ -43,17 +43,17 @@ public class ActionHandler implements ActionListener {
 
                         case PLACE -> {
                             Gui.getGame().placeStone(player, button.getCoordinate());
-                            logger.debug("Stein gesetzt");
+                            logger.debug("set stone at coordinate " + button.getCoordinate());
                         }
 
                         case MOVE, FLY -> {
                             if (tmp == null || !Gui.getGame().getPositionAtCoordinate(button.getCoordinate()).getStoneState().equals(StoneState.NONE)) {
                                 tmp = button;
-                                logger.debug("tmp gesetzt");
+                                logger.debug("set tmp stone at coordinate " + button.getCoordinate());
                             } else {
                                 Gui.getGame().moveStone(player, tmp.getCoordinate(), button.getCoordinate());
+                                logger.debug("moved stone from coordinate " + tmp.getCoordinate() + " to coordinate " + button.getCoordinate());
                                 tmp = null;
-                                logger.debug("Stein gezogen");
                             }
                         }
                         case WON, LOST -> {

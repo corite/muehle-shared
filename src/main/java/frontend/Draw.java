@@ -102,6 +102,8 @@ public class Draw extends JLabel {
         else {
             g.drawString(getResizedString(Gui.getGame().getNextPlayerToMove().getName()) + " ist am Zug.", 700, 50);
         }
+        g.drawString(getResizedString(Gui.getGame().getPlayer1().getName()) + " spielt " + getColorAsString(Gui.getGame().getPlayer1().getColor()), 700, 100);
+        g.drawString(getResizedString(Gui.getGame().getPlayer2().getName()) + " spielt " + getColorAsString(Gui.getGame().getPlayer2().getColor()), 700, 125);
 
         for (int i=0; i<=8-Gui.getGame().getPlayer1().getPlacedStones(); i++){
             g.setColor(Color.WHITE);
@@ -123,13 +125,21 @@ public class Draw extends JLabel {
 
     private String getResizedString(String a) {
         if (a != null) {
-            if (a.length() > 12) {
-                return a.substring(0, 12) + "...";
+            if (a.length() > 10) {
+                return a.substring(0, 10) + "...";
             }else{
                 return a;
             }
         }else {
             return "";
+        }
+    }
+
+    private String getColorAsString(StoneState s){
+        if (s.equals(StoneState.WHITE)){
+            return "Weiss";
+        }else{
+            return "Schwarz";
         }
     }
 }

@@ -31,13 +31,20 @@ public class Gui {
         String name2 = "";
         while (name1 == null || name1.equals("")){
             name1 = JOptionPane.showInputDialog(frame,"Enter username for Player 1!");
-
         }
         while (name2 == null || name2.equals("")){
             name2 = JOptionPane.showInputDialog(frame,"Enter username for Player 2!");
         }
-        Player player1 = new Player(name1, StoneState.WHITE);
-        Player player2 = new Player(name2, StoneState.BLACK);
+        double random = Math.random();
+        Player player1;
+        Player player2;
+        if (random < 0.5){
+            player1 = new Player(name1, StoneState.WHITE);
+            player2 = new Player(name2, StoneState.BLACK);
+        }else {
+            player1 = new Player(name1, StoneState.BLACK);
+            player2 = new Player(name2, StoneState.WHITE);
+        }
         game = new Game(player1, player2);
 
         //creating JLabel from draw class and draw settings
