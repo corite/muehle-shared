@@ -22,22 +22,30 @@ public class Gui {
         //creating window and window settings
         frame = new JFrame("Muehle");
         frame.setBounds(0,0,1000, 750);
-        frame.getContentPane().setBackground(Color.LIGHT_GRAY);
+        frame.getContentPane().setBackground(Color.decode("#FDFD96"));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
         frame.setResizable(false);
+
+        String name1 = "";
+        String name2 = "";
+        while (name1 == null || name1.equals("")){
+            name1 = JOptionPane.showInputDialog(frame,"Enter username for Player 1!");
+
+        }
+        while (name2 == null || name2.equals("")){
+            name2 = JOptionPane.showInputDialog(frame,"Enter username for Player 2!");
+        }
+        Player player1 = new Player(name1, StoneState.WHITE);
+        Player player2 = new Player(name2, StoneState.BLACK);
+        game = new Game(player1, player2);
 
         //creating JLabel from draw class and draw settings
         draw = new Draw();
         draw.setBounds(0,0,1000,750);
         draw.setVisible(true);
         frame.add(draw);
-
-        String name1 = JOptionPane.showInputDialog(frame,"Enter username for Player 1!");
-        String name2 = JOptionPane.showInputDialog(frame,"Enter username for Player 2!");
-        Player player1 = new Player(name1, StoneState.WHITE);
-        Player player2 = new Player(name2, StoneState.BLACK);
-        game = new Game(player1, player2);
+        getDraw().repaint();
 
         //create buttons
         ArrayList<Coordinate> coordinates = game.getField().nodes().stream().map(Position:: getCoordinate).collect(Collectors.toCollection(ArrayList::new));
@@ -45,7 +53,7 @@ public class Gui {
         for (int i=0; i< btn.length; i++){
             btn[i] = new Button(coordinates.get(i));
             btn[i].setVisible(true);
-            btn[i].addActionListener(new ActionHandler());
+            btn[i].addActionListener(new ActionHandler(draw));
             btn[i].setFocusPainted(false);
             btn[i].setContentAreaFilled(false);
             btn[i].setBorder(null);
