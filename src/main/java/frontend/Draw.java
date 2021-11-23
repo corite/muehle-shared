@@ -94,13 +94,13 @@ public class Draw extends JLabel {
         }
         g.setFont(g.getFont().deriveFont(g.getFont().getSize() * 1.4F));
         if (Gui.getGame().getPlayer1().getPhase().equals(GamePhase.WON)) {
-            g.drawString(Gui.getGame().getPlayer1().getName() + " hat gewonnen.", 700, 50);
+            g.drawString(getResizedString(Gui.getGame().getPlayer1().getName()) + " hat gewonnen.", 700, 50);
         }
         else if (Gui.getGame().getPlayer2().getPhase().equals(GamePhase.WON)) {
-            g.drawString(Gui.getGame().getPlayer2().getName() + " hat gewonnen", 700, 50);
+            g.drawString(getResizedString(Gui.getGame().getPlayer2().getName()) + " hat gewonnen", 700, 50);
         }
         else {
-            g.drawString(Gui.getGame().getNextPlayerToMove().getName() + " ist am Zug.", 700, 50);
+            g.drawString(getResizedString(Gui.getGame().getNextPlayerToMove().getName()) + " ist am Zug.", 700, 50);
         }
 
         for (int i=0; i<=8-Gui.getGame().getPlayer1().getPlacedStones(); i++){
@@ -118,6 +118,18 @@ public class Draw extends JLabel {
             g.drawOval(750+5, 600-i*50+5, 30, 30);
             g.drawOval(750+10, 600-i*50+10, 20, 20);
             g.setColor(Color.BLACK);
+        }
+    }
+
+    private String getResizedString(String a) {
+        if (a != null) {
+            if (a.length() > 12) {
+                return a.substring(0, 12) + "...";
+            }else{
+                return a;
+            }
+        }else {
+            return "";
         }
     }
 }

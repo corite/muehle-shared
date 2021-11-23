@@ -31,6 +31,7 @@ public class Gui {
         String name2 = "";
         while (name1 == null || name1.equals("")){
             name1 = JOptionPane.showInputDialog(frame,"Enter username for Player 1!");
+
         }
         while (name2 == null || name2.equals("")){
             name2 = JOptionPane.showInputDialog(frame,"Enter username for Player 2!");
