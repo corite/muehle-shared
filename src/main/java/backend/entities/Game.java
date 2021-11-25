@@ -344,14 +344,13 @@ public class Game {
         }
         if (!isNextOperationTake()) {
             throw new IllegalMoveException();
-            //todo: maybe throw separate Exception
         }
         if (!getOtherPlayer(player).getColor().equals(getPositionAtCoordinate(coordinate).getStoneState())) {
             //a player can only take stones from another player, not from himself or unoccupied stones
             throw new IllegalMoveException();
         }
         if (isPartOfMill(coordinate) && !hasAllStonesInMills(getOtherPlayer(player))) {
-            //stone to take can not be in a mill, except the other player is in the FLY-phase
+            //stone to take can not be in a mill, except the other player only has stones in mills left
             throw  new IllegalMoveException();
         }
     }
@@ -365,7 +364,7 @@ public class Game {
     public void placeStone(Player player, Coordinate coordinate) throws GameException {
         checkValidPlaceInput(player,coordinate);
         getPositionAtCoordinate(coordinate).setStoneState(player.getColor());
-        player.addPLacedStone();
+        player.addPlacedStone();
         updateGamePhases();
 
         if (isPartOfMill(coordinate)) {

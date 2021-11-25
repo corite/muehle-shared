@@ -38,7 +38,7 @@ public class Player {
         return placedStones;
     }
 
-    public void addPLacedStone() {
+    public void addPlacedStone() {
         this.placedStones++;
     }
 

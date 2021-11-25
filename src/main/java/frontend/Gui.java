@@ -4,10 +4,7 @@ import backend.entities.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.stream.Collectors;
 
 public class Gui {
@@ -60,8 +57,12 @@ public class Gui {
 
         //create buttons
 
-        ArrayList<Coordinate> coordinates = game.getField().nodes().stream().map(Position:: getCoordinate).collect(Collectors.toCollection(ArrayList::new));
-        coordinates.sort(((o1, o2) -> o1.getY() == o2.getY() ? Integer.compare(o1.getX(), o2.getX()) : -Integer.compare(o1.getY(),o2.getY())));
+        ArrayList<Coordinate> coordinates = game.getField().nodes().stream()
+                .map(Position::getCoordinate)
+                .sorted(((o1, o2) -> o1.getY() == o2.getY() ? Integer.compare(o1.getX(), o2.getX()) : -Integer.compare(o1.getY(), o2.getY())))
+                //sorts the collection so that the nodes can be traversed row by row from top to bottom
+                .collect(Collectors.toCollection(ArrayList::new));
+
         for (int i=0; i< btn.length; i++){
             btn[i] = new Button(coordinates.get(i));
             btn[i].setVisible(true);
