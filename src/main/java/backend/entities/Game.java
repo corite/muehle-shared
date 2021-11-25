@@ -234,12 +234,6 @@ public class Game {
                     getOtherPlayer(player).setPhase(WON);
                     logger.info("player {} is now in phase WON",getOtherPlayer(player).getName());
                 }
-                if (!isAbleToMove(player)) {
-                    player.setPhase(LOST);
-                    logger.info("player {} is now in phase LOST",player.getName());
-                    getOtherPlayer(player).setPhase(WON);
-                    logger.info("player {} is now in phase WON",getOtherPlayer(player).getName());
-                }
             }
         }
     }
