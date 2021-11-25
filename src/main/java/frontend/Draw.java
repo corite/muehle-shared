@@ -69,8 +69,13 @@ public class Draw extends JLabel {
             g.fillRect(450 + i*100-5,350-5,10,10);
         }
 
+        //iterate through all Buttons
+
         for (int i=0; i<=23;i++){
             if (Gui.getBtn(i) != null) {
+
+                //draw Stones on Button Coordinates
+
                 if (Gui.getGame().getPositionAtCoordinate(Gui.getBtn(i).getCoordinate()).getStoneState().equals(StoneState.BLACK)) {
                     g.setColor(Color.BLACK);
                     g.fillOval(Gui.getBtn(i).getX(), Gui.getBtn(i).getY(), 40, 40);
@@ -85,6 +90,9 @@ public class Draw extends JLabel {
                     g.drawOval(Gui.getBtn(i).getX()+5, Gui.getBtn(i).getY()+5, 30, 30);
                     g.drawOval(Gui.getBtn(i).getX()+10, Gui.getBtn(i).getY()+10, 20, 20);
                 }
+
+                //draw red circle around selected Button during move/fly phase
+
                 if (ActionHandler.getTmp() != null){
                     g.setColor(Color.RED);
                     g.drawOval(ActionHandler.getTmp().getX(), ActionHandler.getTmp().getY(), 40, 40);
@@ -92,18 +100,23 @@ public class Draw extends JLabel {
                 }
             }
         }
+
+        //draw String of moving/winning player
+
         g.setFont(g.getFont().deriveFont(g.getFont().getSize() * 1.4F));
         if (Gui.getGame().getPlayer1().getPhase().equals(GamePhase.WON)) {
             g.drawString(getResizedString(Gui.getGame().getPlayer1().getName()) + " hat gewonnen.", 700, 50);
         }
         else if (Gui.getGame().getPlayer2().getPhase().equals(GamePhase.WON)) {
-            g.drawString(getResizedString(Gui.getGame().getPlayer2().getName()) + " hat gewonnen", 700, 50);
+            g.drawString(getResizedString(Gui.getGame().getPlayer2().getName()) + " hat gewonnen.", 700, 50);
         }
         else {
             g.drawString(getResizedString(Gui.getGame().getNextPlayerToMove().getName()) + " ist am Zug.", 700, 50);
         }
-        g.drawString(getResizedString(Gui.getGame().getPlayer1().getName()) + " spielt " + getColorAsString(Gui.getGame().getPlayer1().getColor()), 700, 100);
-        g.drawString(getResizedString(Gui.getGame().getPlayer2().getName()) + " spielt " + getColorAsString(Gui.getGame().getPlayer2().getColor()), 700, 125);
+        g.drawString(getResizedString(Gui.getGame().getPlayer1().getName()) + " spielt " + getColorAsString(Gui.getGame().getPlayer1().getColor()) + ".", 700, 100);
+        g.drawString(getResizedString(Gui.getGame().getPlayer2().getName()) + " spielt " + getColorAsString(Gui.getGame().getPlayer2().getColor()) + ".", 700, 125);
+
+        //draw remaining Stones of the players
 
         for (int i=0; i<=8-Gui.getGame().getPlayer1().getPlacedStones(); i++){
             g.setColor(Color.WHITE);
@@ -135,10 +148,10 @@ public class Draw extends JLabel {
         }
     }
 
-    private String getColorAsString(StoneState s){
-        if (s.equals(StoneState.WHITE)){
+    private String getColorAsString(StoneState s) {
+        if (s.equals(StoneState.WHITE)) {
             return "Weiss";
-        }else{
+        } else {
             return "Schwarz";
         }
     }
