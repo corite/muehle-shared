@@ -20,12 +20,15 @@ public class Gui {
     public Gui(){
 
         //creating window and window settings
+
         frame = new JFrame("Muehle");
         frame.setBounds(0,0,1000, 750);
         frame.getContentPane().setBackground(Color.decode("#FDFD96"));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
         frame.setResizable(false);
+
+        //get player name input through popup window, catch empty String or cancel Operation and initialize game
 
         String name1 = "";
         String name2 = "";
@@ -48,6 +51,7 @@ public class Gui {
         game = new Game(player1, player2);
 
         //creating JLabel from draw class and draw settings
+
         draw = new Draw();
         draw.setBounds(0,0,1000,750);
         draw.setVisible(true);
@@ -55,12 +59,13 @@ public class Gui {
         getDraw().repaint();
 
         //create buttons
+
         ArrayList<Coordinate> coordinates = game.getField().nodes().stream().map(Position:: getCoordinate).collect(Collectors.toCollection(ArrayList::new));
         coordinates.sort(((o1, o2) -> o1.getY() == o2.getY() ? Integer.compare(o1.getX(), o2.getX()) : -Integer.compare(o1.getY(),o2.getY())));
         for (int i=0; i< btn.length; i++){
             btn[i] = new Button(coordinates.get(i));
             btn[i].setVisible(true);
-            btn[i].addActionListener(new ActionHandler(draw));
+            btn[i].addActionListener(new ActionHandler());
             btn[i].setFocusPainted(false);
             btn[i].setContentAreaFilled(false);
             btn[i].setBorder(null);

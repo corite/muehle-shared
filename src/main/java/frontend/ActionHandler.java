@@ -15,11 +15,6 @@ public class ActionHandler implements ActionListener {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private static Button tmp = null;
-    private final Draw draw;
-
-    public ActionHandler(Draw draw) {
-        this.draw = draw;
-    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -28,17 +23,24 @@ public class ActionHandler implements ActionListener {
             Button button = (Button) e.getSource();
             Player player = Gui.getGame().getNextPlayerToMove();
             GamePhase phase = player.getPhase();
+            Draw draw = Gui.getDraw();
 
             if (Gui.getGame().isNextOperationTake()) {
+
+                //try to perform take operation if the next operation is take and repaint JLabel properly
+
                 try {
                     Gui.getGame().takeStone(player, button.getCoordinate());
-                    Gui.getDraw().repaint();
+                    draw.repaint();
                     logger.debug("took Stone from coordinate " + button.getCoordinate());
                 } catch (IllegalMoveException ex) {
                     logger.warn("Illegal Take", ex);
                 }
             } else {
                 try {
+
+                    //try to perform different phase moves and repaint JLabel
+
                     switch (phase) {
 
                         case PLACE -> {
@@ -56,11 +58,8 @@ public class ActionHandler implements ActionListener {
                                 tmp = null;
                             }
                         }
-                        case WON, LOST -> {
-                            //display something nice
-                        }
                     }
-                    Gui.getDraw().repaint();
+                    draw.repaint();
                 } catch (GameException ex) {
                     logger.warn("Illegal Move", ex);
                 }
