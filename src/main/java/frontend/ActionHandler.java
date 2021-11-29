@@ -13,24 +13,30 @@ import java.awt.event.ActionListener;
 
 public class ActionHandler implements ActionListener {
 
+
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private static Button tmp = null;
+    private final Gui gui;
+
+    public ActionHandler(Gui gui) {
+        this.gui = gui;
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
 
         if (e.getSource() instanceof Button) {
             Button button = (Button) e.getSource();
-            Player player = Gui.getGame().getNextPlayerToMove();
+            Player player = gui.getGame().getNextPlayerToMove();
             GamePhase phase = player.getPhase();
-            Draw draw = Gui.getDraw();
+            Draw draw = gui.getDraw();
 
-            if (Gui.getGame().isNextOperationTake()) {
+            if (gui.getGame().isNextOperationTake()) {
 
                 //try to perform take operation if the next operation is take and repaint JLabel properly
 
                 try {
-                    Gui.getGame().takeStone(player, button.getCoordinate());
+                    gui.getGame().takeStone(player, button.getCoordinate());
                     draw.repaint();
                     logger.debug("took Stone from coordinate " + button.getCoordinate());
                 } catch (IllegalMoveException ex) {
@@ -44,16 +50,16 @@ public class ActionHandler implements ActionListener {
                     switch (phase) {
 
                         case PLACE -> {
-                            Gui.getGame().placeStone(player, button.getCoordinate());
+                            gui.getGame().placeStone(player, button.getCoordinate());
                             logger.debug("set stone at coordinate " + button.getCoordinate());
                         }
 
                         case MOVE, FLY -> {
-                            if (tmp == null || !Gui.getGame().getPositionAtCoordinate(button.getCoordinate()).getStoneState().equals(StoneState.NONE)) {
+                            if (tmp == null || !gui.getGame().getPositionAtCoordinate(button.getCoordinate()).getStoneState().equals(StoneState.NONE)) {
                                 tmp = button;
                                 logger.debug("set tmp stone at coordinate " + button.getCoordinate());
                             } else {
-                                Gui.getGame().moveStone(player, tmp.getCoordinate(), button.getCoordinate());
+                                gui.getGame().moveStone(player, tmp.getCoordinate(), button.getCoordinate());
                                 logger.debug("moved stone from coordinate " + tmp.getCoordinate() + " to coordinate " + button.getCoordinate());
                                 tmp = null;
                             }

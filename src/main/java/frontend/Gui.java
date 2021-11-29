@@ -9,10 +9,10 @@ import java.util.stream.Collectors;
 
 public class Gui {
 
-    private static Draw draw;
+    private Draw draw;
     private final JFrame frame;
-    private static final Button[]btn = new Button[24];
-    private static Game game;
+    private final Button[]btn = new Button[24];
+    private Game game;
 
     public Gui(){
 
@@ -49,7 +49,7 @@ public class Gui {
 
         //creating JLabel from draw class and draw settings
 
-        draw = new Draw();
+        draw = new Draw(this);
         draw.setBounds(0,0,1000,750);
         draw.setVisible(true);
         frame.add(draw);
@@ -66,7 +66,7 @@ public class Gui {
         for (int i=0; i< btn.length; i++){
             btn[i] = new Button(coordinates.get(i));
             btn[i].setVisible(true);
-            btn[i].addActionListener(new ActionHandler());
+            btn[i].addActionListener(new ActionHandler(this));
             btn[i].setFocusPainted(false);
             btn[i].setContentAreaFilled(false);
             btn[i].setBorder(null);
@@ -75,15 +75,15 @@ public class Gui {
         this.placeBtn();
     }
 
-    public static Game getGame() {
+    public Game getGame() {
         return game;
     }
 
-    public static Button getBtn(int i){
+    public Button getBtn(int i){
         return btn[i];
     }
 
-    public static Draw getDraw() {
+    public Draw getDraw() {
         return draw;
     }
 
