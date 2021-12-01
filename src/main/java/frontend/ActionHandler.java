@@ -15,7 +15,6 @@ public class ActionHandler implements ActionListener {
 
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
-    private static Button tmp = null;
     private final Gui gui;
 
     public ActionHandler(Gui gui) {
@@ -55,13 +54,13 @@ public class ActionHandler implements ActionListener {
                         }
 
                         case MOVE, FLY -> {
-                            if (tmp == null || !gui.getGame().getPositionAtCoordinate(button.getCoordinate()).getStoneState().equals(StoneState.NONE)) {
-                                tmp = button;
+                            if (gui.getTmp() == null || !gui.getGame().getPositionAtCoordinate(button.getCoordinate()).getStoneState().equals(StoneState.NONE)) {
+                                gui.setTmp(button);
                                 logger.debug("set tmp stone at coordinate " + button.getCoordinate());
                             } else {
-                                gui.getGame().moveStone(player, tmp.getCoordinate(), button.getCoordinate());
-                                logger.debug("moved stone from coordinate " + tmp.getCoordinate() + " to coordinate " + button.getCoordinate());
-                                tmp = null;
+                                gui.getGame().moveStone(player, gui.getTmp().getCoordinate(), button.getCoordinate());
+                                logger.debug("moved stone from coordinate " + gui.getTmp().getCoordinate() + " to coordinate " + button.getCoordinate());
+                                gui.setTmp(null);
                             }
                         }
                     }
@@ -71,9 +70,5 @@ public class ActionHandler implements ActionListener {
                 }
             }
         }
-    }
-
-    public static Button getTmp() {
-        return tmp;
     }
 }

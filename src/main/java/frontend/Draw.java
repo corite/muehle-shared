@@ -8,7 +8,7 @@ import java.awt.*;
 
 public class Draw extends JLabel {
     private Gui gui;
-    
+
     public Draw(Gui gui) {
         this.gui = gui;
     }
@@ -98,9 +98,9 @@ public class Draw extends JLabel {
 
                 //draw red circle around selected Button during move/fly phase
 
-                if (ActionHandler.getTmp() != null){
+                if (gui.getTmp() != null){
                     g.setColor(Color.RED);
-                    g.drawOval(ActionHandler.getTmp().getX(), ActionHandler.getTmp().getY(), 40, 40);
+                    g.drawOval(gui.getTmp().getX(), gui.getTmp().getY(), 40, 40);
                     g.setColor(Color.BLACK);
                 }
             }

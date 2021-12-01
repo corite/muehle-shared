@@ -13,6 +13,7 @@ public class Gui {
     private final JFrame frame;
     private final Button[]btn = new Button[24];
     private Game game;
+    private Button tmp = null;
 
     public Gui(){
 
@@ -85,6 +86,14 @@ public class Gui {
 
     public Draw getDraw() {
         return draw;
+    }
+
+    public Button getTmp() {
+        return tmp;
+    }
+
+    public void setTmp(Button tmp) {
+        this.tmp = tmp;
     }
 
     //Button placement
