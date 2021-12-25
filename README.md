@@ -2,9 +2,15 @@
 Repository containing classes that can be used in both the client- and the serverside application. 
 ## Usage
 ### Integration
-To use this project as a dependency, put this line under `dependencies` in your `build.gradle`:
+To use this project as a dependency, you have to add jitpack as in the `repositories` section in your `build.gradle`:
 ```groovy
-
+    maven { url 'https://jitpack.io' }
 ```
+
+Then, put this line under `dependencies`:
+```groovy
+    implementation group: 'com.github.corite', name: 'muehle-shared', version: 'master-SNAPSHOT'
+```
+The version has to be a valid tag from the repository, a commit-hash or `master-SNAPSHOT`.
 ### Environment Variables
 - `logLevel`: specifies a log-level for Logback (p.e. `INFO`, `WARN` )
