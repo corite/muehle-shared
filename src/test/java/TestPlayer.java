@@ -8,11 +8,11 @@ public class TestPlayer {
     @Test
     public void testPlayer() {
         try {
-            new Player("a", StoneState.NONE);
+            new Player("a", 1, StoneState.NONE);
             fail();
         } catch (IllegalArgumentException e) {}
 
-        new Player("b",StoneState.WHITE);
-        new Player("c",StoneState.BLACK);
+        new Player("b", 1, StoneState.WHITE);
+        new Player("c",1, StoneState.BLACK);
     }
 }

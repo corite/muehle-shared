@@ -20,20 +20,20 @@ public class TestGame {
 
     @BeforeEach
     public void getLegalGame() {
-        player1 = new Player("player1", StoneState.BLACK);
-        player2 = new Player("player2",StoneState.WHITE);
+        player1 = new Player("player1",1, StoneState.BLACK);
+        player2 = new Player("player2",1,StoneState.WHITE);
         game = new Game(player1,player2);
     }
 
     public Game getIllegalGame1() {
-        Player player1 = new Player("player1", StoneState.WHITE);
-        Player player2 = new Player("player2",StoneState.WHITE);
+        Player player1 = new Player("player1", 1, StoneState.WHITE);
+        Player player2 = new Player("player2",1, StoneState.WHITE);
         return new Game(player1,player2);
     }
 
     public Game getIllegalGame2() {
-        Player player1 = new Player("player1", StoneState.BLACK);
-        Player player2 = new Player("player2",StoneState.BLACK);
+        Player player1 = new Player("player1", 1,StoneState.BLACK);
+        Player player2 = new Player("player2", 1,StoneState.BLACK);
         return new Game(player1,player2);
     }
 
