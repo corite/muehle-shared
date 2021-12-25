@@ -5,11 +5,13 @@ import java.util.Objects;
 public class Player {
     private final String name;
     private final StoneState color;
+    private final int nameId;
     private GamePhase phase;
     private int placedStones=0;
 
-    public Player(String name, StoneState color) {
+    public Player(String name, int nameId, StoneState color) {
         this.name = name;
+        this.nameId = nameId;
         this.phase = GamePhase.PLACE;//initially always place
 
         if (StoneState.NONE.equals(color) || color == null) {
@@ -42,17 +44,36 @@ public class Player {
         this.placedStones++;
     }
 
+    public int getNameId() {
+        return nameId;
+    }
+
+    public String getPlayerId() {
+        return getName()+"#"+getNameId();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         Player player = (Player) o;
-        return getName().equals(player.getName()) && getColor() == player.getColor();
+
+        if (nameId != player.nameId) return false;
+        if (getPlacedStones() != player.getPlacedStones()) return false;
+        if (getName() != null ? !getName().equals(player.getName()) : player.getName() != null) return false;
+        if (getColor() != player.getColor()) return false;
+        return getPhase() == player.getPhase();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getColor());
+        int result = getName() != null ? getName().hashCode() : 0;
+        result = 31 * result + (getColor() != null ? getColor().hashCode() : 0);
+        result = 31 * result + nameId;
+        result = 31 * result + (getPhase() != null ? getPhase().hashCode() : 0);
+        result = 31 * result + getPlacedStones();
+        return result;
     }
 
     @Override
@@ -60,6 +81,7 @@ public class Player {
         return "Player{" +
                 "name='" + name + '\'' +
                 ", color=" + color +
+                ", nameId=" + nameId +
                 ", phase=" + phase +
                 ", placedStones=" + placedStones +
                 '}';
