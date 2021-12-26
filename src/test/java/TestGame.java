@@ -1,12 +1,10 @@
-import backend.entities.Coordinate;
-import backend.entities.Game;
-import backend.entities.Player;
-import backend.entities.StoneState;
-import backend.exceptions.IllegalMoveException;
-import backend.exceptions.IllegalPlayerException;
-import backend.exceptions.InvalidPhaseException;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
+import logic.entities.Coordinate;
+import logic.entities.Game;
+import logic.entities.Player;
+import logic.entities.StoneState;
+import logic.exceptions.IllegalMoveException;
+import logic.exceptions.IllegalPlayerException;
+import logic.exceptions.InvalidPhaseException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -1,6 +1,8 @@
-package backend.entities;
+package logic.entities;
 
-public enum StoneState {
+import java.io.Serializable;
+
+public enum StoneState implements Serializable {
     NONE(-1),BLACK(0),WHITE(1);
     private final int state;
 

@@ -1,4 +1,4 @@
-package backend.exceptions;
+package logic.exceptions;
 
 /**
  * Gets thrown when an authorised player tries to perform an action which he is not allowed to in his current phase.

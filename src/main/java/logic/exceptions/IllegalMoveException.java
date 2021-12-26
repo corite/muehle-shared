@@ -1,4 +1,4 @@
-package backend.exceptions;
+package logic.exceptions;
 
 /**
  * Gets thrown when the player is authorised to move and performs an operation he is allowed to do in his phase,

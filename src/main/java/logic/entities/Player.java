@@ -1,8 +1,8 @@
-package backend.entities;
+package logic.entities;
 
-import java.util.Objects;
+import java.io.Serializable;
 
-public class Player {
+public class Player implements Serializable {
     private final String name;
     private final StoneState color;
     private final int nameId;

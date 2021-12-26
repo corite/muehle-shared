@@ -1,6 +1,8 @@
-package backend.entities;
+package logic.entities;
 
-public enum GamePhase {
+import java.io.Serializable;
+
+public enum GamePhase implements Serializable {
     PLACE(0),MOVE(1),FLY(2),WON(3),LOST(4);
     private final int state;
 

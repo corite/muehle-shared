@@ -1,8 +1,9 @@
-package backend.entities;
+package logic.entities;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Position {
+public class Position implements Serializable {
 
     private Coordinate coordinate;
     private StoneState stoneState;//white, black or not set as defined in the enum

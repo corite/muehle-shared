@@ -1,22 +1,24 @@
-package backend.entities;
+package logic.entities;
 
-import backend.exceptions.GameException;
-import backend.exceptions.IllegalMoveException;
-import backend.exceptions.InvalidPhaseException;
-import backend.exceptions.IllegalPlayerException;
+import logic.exceptions.GameException;
+import logic.exceptions.IllegalMoveException;
+import logic.exceptions.InvalidPhaseException;
+import logic.exceptions.IllegalPlayerException;
 import com.google.common.graph.GraphBuilder;
 import com.google.common.graph.ImmutableGraph;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Serializable;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.stream.Collectors;
 
-import static backend.entities.GamePhase.*;
-import static backend.entities.StoneState.NONE;
+import static logic.entities.GamePhase.*;
+import static logic.entities.StoneState.NONE;
 
-public class Game {
+public class Game implements Serializable {
     private final ImmutableGraph<Position> field;
     private final Player player1;
     private final Player player2;

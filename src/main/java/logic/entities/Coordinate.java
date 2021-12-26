@@ -1,6 +1,8 @@
-package backend.entities;
+package logic.entities;
 
-public class Coordinate {
+import java.io.Serializable;
+
+public class Coordinate implements Serializable {
     private final int x;
     private final int y;
 

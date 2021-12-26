@@ -1,5 +1,5 @@
-import backend.entities.Player;
-import backend.entities.StoneState;
+import logic.entities.Player;
+import logic.entities.StoneState;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.fail;
