@@ -1,5 +1,6 @@
 package logic.entities;
 
+import java.io.OutputStream;
 import java.io.Serializable;
 
 public class Player implements Serializable {
@@ -8,12 +9,14 @@ public class Player implements Serializable {
     private final int nameId;
     private GamePhase phase;
     private int placedStones=0;
+    private OutputStream outputStream;
 
-    public Player(String name, int nameId, StoneState color) {
+    public Player(String name, int nameId, StoneState color, OutputStream outputStream) {
         this.name = name;
         this.nameId = nameId;
         this.phase = GamePhase.PLACE;//initially always place
         this.color = color;
+        this.outputStream = outputStream;
     }
 
     public String getName() {
@@ -46,6 +49,14 @@ public class Player implements Serializable {
 
     public String getPlayerId() {
         return getName()+"#"+getNameId();
+    }
+
+    public OutputStream getOutputStream() {
+        return outputStream;
+    }
+
+    public void setOutputStream(OutputStream outputStream) {
+        this.outputStream = outputStream;
     }
 
     @Override

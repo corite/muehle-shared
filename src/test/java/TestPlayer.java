@@ -7,8 +7,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class TestPlayer {
     @Test
     public void testPlayer() {
-        new Player("a", 1, StoneState.NONE);
-        new Player("b", 1, StoneState.WHITE);
-        new Player("c",1, StoneState.BLACK);
+        new Player("a", 1, StoneState.NONE, null);
+        new Player("b", 1, StoneState.WHITE, null);
+        new Player("c",1, StoneState.BLACK, null);
     }
 }

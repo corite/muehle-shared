@@ -8,30 +8,35 @@ import logic.exceptions.InvalidPhaseException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestGame {
     Game game;
     Player player1;
     Player player2;
+    OutputStream os;
 
 
     @BeforeEach
     public void getLegalGame() {
-        player1 = new Player("player1",1, StoneState.BLACK);
-        player2 = new Player("player2",1,StoneState.WHITE);
+        player1 = new Player("player1",1, StoneState.BLACK ,os);
+        player2 = new Player("player2",1,StoneState.WHITE, os);
         game = new Game(player1,player2);
     }
 
     public Game getIllegalGame1() {
-        Player player1 = new Player("player1", 1, StoneState.WHITE);
-        Player player2 = new Player("player2",1, StoneState.WHITE);
+        Player player1 = new Player("player1", 1, StoneState.WHITE, os);
+        Player player2 = new Player("player2",1, StoneState.WHITE, os);
         return new Game(player1,player2);
     }
 
     public Game getIllegalGame2() {
-        Player player1 = new Player("player1", 1,StoneState.BLACK);
-        Player player2 = new Player("player2", 1,StoneState.BLACK);
+        Player player1 = new Player("player1", 1,StoneState.BLACK, os);
+        Player player2 = new Player("player2", 1,StoneState.BLACK, os);
         return new Game(player1,player2);
     }
 
