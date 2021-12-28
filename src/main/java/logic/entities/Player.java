@@ -13,11 +13,7 @@ public class Player implements Serializable {
         this.name = name;
         this.nameId = nameId;
         this.phase = GamePhase.PLACE;//initially always place
-
-        if (StoneState.NONE.equals(color) || color == null) {
-            throw new IllegalArgumentException("Player color must be white or black");
-        }
-        this.color=color;
+        this.color = color;
     }
 
     public String getName() {

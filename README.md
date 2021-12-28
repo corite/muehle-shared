@@ -9,7 +9,7 @@ To use this project as a dependency, you have to add jitpack as in the `reposito
 
 Then, put this line under `dependencies`:
 ```groovy
-    implementation group: 'com.github.corite', name: 'muehle-shared', version: 'main-SNAPSHOT'
+    implementation 'com.github.corite:muehle-shared:main-SNAPSHOT'
 ```
 The version has to be a valid tag from the repository, a commit-hash or `<branch>-SNAPSHOT`, where `<branch>` has to be replaced by the desired branch to get the snapshot from.
 ### Environment Variables
