@@ -59,6 +59,7 @@ public class Player implements Serializable {
         this.outputStream = outputStream;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -66,20 +67,14 @@ public class Player implements Serializable {
 
         Player player = (Player) o;
 
-        if (nameId != player.nameId) return false;
-        if (getPlacedStones() != player.getPlacedStones()) return false;
-        if (getName() != null ? !getName().equals(player.getName()) : player.getName() != null) return false;
-        if (getColor() != player.getColor()) return false;
-        return getPhase() == player.getPhase();
+        if (getNameId() != player.getNameId()) return false;
+        return getName() != null ? getName().equals(player.getName()) : player.getName() == null;
     }
 
     @Override
     public int hashCode() {
         int result = getName() != null ? getName().hashCode() : 0;
-        result = 31 * result + (getColor() != null ? getColor().hashCode() : 0);
-        result = 31 * result + nameId;
-        result = 31 * result + (getPhase() != null ? getPhase().hashCode() : 0);
-        result = 31 * result + getPlacedStones();
+        result = 31 * result + getNameId();
         return result;
     }
 

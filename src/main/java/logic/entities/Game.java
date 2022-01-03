@@ -194,7 +194,7 @@ public class Game implements Serializable {
 
 
 
-    private Player getOtherPlayer(Player player) {
+    public Player getOtherPlayer(Player player) {
         if (getPlayer1().equals(player)) {
             return getPlayer2();
         } else if (getPlayer2().equals(player)) {
