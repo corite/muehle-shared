@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 public class Player implements Serializable {
     private final String name;
-    private final StoneState color;
+    private StoneState color;
     private final int nameId;
     private GamePhase phase;
     private int placedStones=0;
@@ -59,6 +59,9 @@ public class Player implements Serializable {
         this.outputStream = outputStream;
     }
 
+    public void setColor(StoneState color) {
+        this.color = color;
+    }
 
     @Override
     public boolean equals(Object o) {
