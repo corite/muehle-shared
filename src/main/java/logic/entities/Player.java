@@ -9,7 +9,7 @@ public class Player implements Serializable {
     private final int nameId;
     private GamePhase phase;
     private int placedStones=0;
-    private OutputStream outputStream;
+    private transient OutputStream outputStream;
 
     public Player(String name, int nameId, StoneState color, OutputStream outputStream) {
         this.name = name;
