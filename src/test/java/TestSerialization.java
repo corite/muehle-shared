@@ -1,4 +1,3 @@
-import ch.qos.logback.classic.pattern.ClassNameOnlyAbbreviator;
 import logic.entities.Coordinate;
 import logic.entities.Player;
 import logic.entities.Position;
@@ -37,7 +36,7 @@ public class TestSerialization {
 
     
     private void testSerializationAndDeserialization(Object o) throws IOException, ClassNotFoundException {
-        String fileName = "src/test/resources/test.txt";
+        String fileName = "src"+File.separator+"test"+File.separator+"resources"+File.separator+"test.txt";
         deleteFile(fileName);
         ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fileName));
         ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName));
