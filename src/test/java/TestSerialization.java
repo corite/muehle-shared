@@ -51,7 +51,6 @@ public class TestSerialization {
         String writeName = o.getClass().getName();
         String readName = ois.readObject().getClass().getName();
         assertEquals(writeName,readName);
-        System.out.println(readName);
     }
 
 
