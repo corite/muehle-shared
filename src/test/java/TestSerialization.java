@@ -20,7 +20,7 @@ public class TestSerialization {
 
     @Test
     public void testSerializationAndDeserialization() throws IOException, ClassNotFoundException{
-        Player self = new Player("a",1, StoneState.BLACK, null);
+        Player self = new Player("a", 1, StoneState.BLACK, new ByteArrayOutputStream());
         Player other = new Player("b",1, StoneState.WHITE, null);
 
         testSerializationAndDeserialization(new InitialAction("a"));
