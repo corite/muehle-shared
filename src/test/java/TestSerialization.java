@@ -6,6 +6,7 @@ import networking.entities.*;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
+import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -14,6 +15,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestSerialization {
+
+
 
     @Test
     public void testSerializationAndDeserialization() throws IOException, ClassNotFoundException{
@@ -36,21 +39,20 @@ public class TestSerialization {
 
     
     private void testSerializationAndDeserialization(Object o) throws IOException, ClassNotFoundException {
-        String fileName = "src"+File.separator+"test"+File.separator+"resources"+File.separator+"test.txt";
-        deleteFile(fileName);
-        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fileName));
-        ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName));
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
 
         oos.writeObject(o);
         oos.flush();
-        
+
+        ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(baos.toByteArray()));
+
+
         String writeName = o.getClass().getName();
         String readName = ois.readObject().getClass().getName();
         assertEquals(writeName,readName);
-        deleteFile(fileName);
+        System.out.println(readName);
     }
-    private void deleteFile(String fileName) throws IOException {
-        Files.deleteIfExists(Path.of(fileName));
-    }
+
 
 }
