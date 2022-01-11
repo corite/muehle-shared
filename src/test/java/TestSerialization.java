@@ -6,9 +6,6 @@ import networking.entities.*;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
-import java.net.Socket;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +27,7 @@ public class TestSerialization {
         testSerializationAndDeserialization(new ListPlayersResponse(new ArrayList<>(List.of(self))));
 
         testSerializationAndDeserialization(new GameAction(self,ActionType.PLACE,new Coordinate(0,0)));
-        testSerializationAndDeserialization(new GameResponse("hello", true, ActionType.PLACE, new ArrayList<>(List.of(new Position(0,0)))));
+        testSerializationAndDeserialization(new GameResponse("hello", ActionType.PLACE,self, other, new ArrayList<>(List.of(new Position(0,0)))));
 
         testSerializationAndDeserialization(new EndSessionAction(self));
         testSerializationAndDeserialization(new ConnectAction(self,other));
@@ -39,7 +36,7 @@ public class TestSerialization {
 
     
     private void testSerializationAndDeserialization(Object o) throws IOException, ClassNotFoundException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream(); //using byte array outputStream to test serialization without having to set up a socket etc.
         ObjectOutputStream oos = new ObjectOutputStream(baos);
 
         oos.writeObject(o);

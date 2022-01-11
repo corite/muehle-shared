@@ -1,5 +1,6 @@
 package networking.entities;
 
+import logic.entities.Player;
 import logic.entities.Position;
 
 import java.io.Serializable;
@@ -10,14 +11,16 @@ import java.util.ArrayList;
  */
 public class GameResponse implements Serializable {
     private final String message; //simply a String with information that gets displayed
-    private final boolean isYourTurn; //true if an action is expected from the client
     private final ActionType nextAction; // the next action that is going to be performed
-    private final ArrayList<Position> gameField;
+    private final Player nextPlayerToMove; //player that has to do something next
+    private final Player otherPlayer;
+    private final ArrayList<Position> gameField; //the current field
 
-    public GameResponse(String message, boolean isYourTurn, ActionType nextAction, ArrayList<Position> gameField) {
+    public GameResponse(String message, ActionType nextAction, Player nextPlayerToMove, Player otherPlayer, ArrayList<Position> gameField) {
         this.message = message;
-        this.isYourTurn = isYourTurn;
         this.nextAction = nextAction;
+        this.nextPlayerToMove = nextPlayerToMove;
+        this.otherPlayer = otherPlayer;
         this.gameField = gameField;
     }
 
@@ -25,12 +28,16 @@ public class GameResponse implements Serializable {
         return message;
     }
 
-    public boolean isYourTurn() {
-        return isYourTurn;
-    }
-
     public ActionType getNextAction() {
         return nextAction;
+    }
+
+    public Player getNextPlayerToMove() {
+        return nextPlayerToMove;
+    }
+
+    public Player getOtherPlayer() {
+        return otherPlayer;
     }
 
     public ArrayList<Position> getGameField() {
