@@ -30,6 +30,8 @@ public class TestSerialization {
         testSerializationAndDeserialization(new GameResponse("hello", ActionType.PLACE,self, other, new ArrayList<>(List.of(new Position(0,0)))));
 
         testSerializationAndDeserialization(new EndSessionAction(self));
+        testSerializationAndDeserialization(new EndSessionResponse("oh no"));
+
         testSerializationAndDeserialization(new ConnectAction(self,other));
         testSerializationAndDeserialization(new ReconnectAction(self));
     }
