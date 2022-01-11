@@ -83,12 +83,6 @@ public class Player implements Serializable {
 
     @Override
     public String toString() {
-        return "Player{" +
-                "name='" + name + '\'' +
-                ", color=" + color +
-                ", nameId=" + nameId +
-                ", phase=" + phase +
-                ", placedStones=" + placedStones +
-                '}';
+        return this.getPlayerId();
     }
 }
