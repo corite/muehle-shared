@@ -34,6 +34,7 @@ public class TestSerialization {
 
         testSerializationAndDeserialization(new ConnectAction(self,other));
         testSerializationAndDeserialization(new ReconnectAction(self));
+        testSerializationAndDeserialization(new DisconnectResponse(self));
     }
 
     
