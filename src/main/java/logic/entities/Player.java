@@ -39,6 +39,10 @@ public class Player implements Serializable {
         return placedStones;
     }
 
+    public void setPlacedStones(int placedStones) {
+        this.placedStones = placedStones;
+    }
+
     public void addPlacedStone() {
         this.placedStones++;
     }
