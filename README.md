@@ -12,5 +12,3 @@ Then, put this line under `dependencies`:
     implementation 'com.github.corite:muehle-shared:main-SNAPSHOT'
 ```
 The version has to be a valid tag from the repository, a commit-hash or `<branch>-SNAPSHOT`, where `<branch>` has to be replaced by the desired branch to get the snapshot from.
-### Environment Variables
-- `logLevel`: specifies a log-level for Logback (p.e. `INFO`, `WARN` )
