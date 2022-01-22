@@ -1,13 +1,11 @@
-import logic.entities.Coordinate;
-import logic.entities.Game;
-import logic.entities.Player;
-import logic.entities.StoneState;
+import logic.entities.*;
 import logic.exceptions.IllegalMoveException;
 import logic.exceptions.IllegalPlayerException;
 import logic.exceptions.InvalidPhaseException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -16,6 +14,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TestGame {
     Game game;
+    User user1;
+    User user2;
     Player player1;
     Player player2;
     OutputStream os;
@@ -23,22 +23,25 @@ public class TestGame {
 
     @BeforeEach
     public void getLegalGame() {
-        player1 = new Player("player1",1, StoneState.BLACK ,os);
-        player2 = new Player("player2",1,StoneState.WHITE, os);
+        user1 = new User("a", new ByteArrayOutputStream());
+        user2 = new User("b", new ByteArrayOutputStream());
+        player1 = new Player(user1, StoneState.BLACK);
+        player2 = new Player(user2,StoneState.WHITE);
         game = new Game(player1,player2);
     }
 
     public Game getIllegalGame1() {
-        Player player1 = new Player("player1", 1, StoneState.WHITE, os);
-        Player player2 = new Player("player2",1, StoneState.WHITE, os);
+        Player player1 = new Player(user1, StoneState.WHITE);
+        Player player2 = new Player(user2, StoneState.WHITE);
         return new Game(player1,player2);
     }
 
     public Game getIllegalGame2() {
-        Player player1 = new Player("player1", 1,StoneState.BLACK, os);
-        Player player2 = new Player("player2", 1,StoneState.BLACK, os);
+        Player player1 = new Player(user1,StoneState.BLACK);
+        Player player2 = new Player(user2,StoneState.BLACK);
         return new Game(player1,player2);
     }
+
 
     @Test
     public void testGetStartPlayer() {
@@ -51,6 +54,7 @@ public class TestGame {
             getIllegalGame2();
             fail();
         } catch (Exception e) {}
+
     }
 
     @Test

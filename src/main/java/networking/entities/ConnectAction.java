@@ -1,23 +1,23 @@
 package networking.entities;
 
-import logic.entities.Player;
+import logic.entities.User;
 
 import java.io.Serializable;
 
 public class ConnectAction implements Serializable {
-    private final Player self;
-    private final Player other;
+    private final User self;
+    private final User other;
 
-    public ConnectAction(Player self, Player other) {
+    public ConnectAction(User self, User other) {
         this.self = self;
         this.other = other;
     }
 
-    public Player getSelf() {
+    public User getSelf() {
         return self;
     }
 
-    public Player getOther() {
+    public User getOther() {
         return other;
     }
 }

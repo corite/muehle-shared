@@ -1,7 +1,4 @@
-import logic.entities.Coordinate;
-import logic.entities.Player;
-import logic.entities.Position;
-import logic.entities.StoneState;
+import logic.entities.*;
 import networking.entities.*;
 import org.junit.jupiter.api.Test;
 
@@ -17,24 +14,29 @@ public class TestSerialization {
 
     @Test
     public void testSerializationAndDeserialization() throws IOException, ClassNotFoundException{
-        Player self = new Player("a", 1, StoneState.BLACK, new ByteArrayOutputStream());
-        Player other = new Player("b",1, StoneState.WHITE, null);
+        User selfUser = new User("a", new ByteArrayOutputStream());
+        User otherUser = new User("b", new ByteArrayOutputStream());
+        Player self = new Player(selfUser, StoneState.BLACK);
+        Player other = new Player(otherUser, StoneState.WHITE);
 
-        testSerializationAndDeserialization(new InitialAction("a"));
-        testSerializationAndDeserialization(new InitialResponse(self));
+        testSerializationAndDeserialization(new RegisterLoginUserAction("a","secure", true));
+        testSerializationAndDeserialization(new RegisterLoginUserResponse(selfUser,true, "yay"));
 
-        testSerializationAndDeserialization(new ListPlayersAction(self));
-        testSerializationAndDeserialization(new ListPlayersResponse(new ArrayList<>(List.of(self))));
+        testSerializationAndDeserialization(new ListUsersAction(selfUser));
+        testSerializationAndDeserialization(new ListUsersResponse(new ArrayList<>(List.of(selfUser))));
 
         testSerializationAndDeserialization(new GameAction(self,ActionType.PLACE,new Coordinate(0,0)));
         testSerializationAndDeserialization(new GameResponse("hello", ActionType.PLACE,self, other, new ArrayList<>(List.of(new Position(0,0)))));
 
-        testSerializationAndDeserialization(new EndSessionAction(self));
-        testSerializationAndDeserialization(new EndSessionResponse("oh no"));
+        testSerializationAndDeserialization(new EndGameAction(self));
+        testSerializationAndDeserialization(new EndGameResponse("oh no"));
 
-        testSerializationAndDeserialization(new ConnectAction(self,other));
+        testSerializationAndDeserialization(new ConnectAction(selfUser,otherUser));
         testSerializationAndDeserialization(new ReconnectAction(self));
         testSerializationAndDeserialization(new DisconnectResponse(self));
+        testSerializationAndDeserialization(new EndSessionAction(selfUser));
+
+
     }
 
     

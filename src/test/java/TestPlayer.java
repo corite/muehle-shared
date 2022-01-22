@@ -1,14 +1,21 @@
 import logic.entities.Player;
 import logic.entities.StoneState;
+import logic.entities.User;
 import org.junit.jupiter.api.Test;
+
+import java.io.ByteArrayOutputStream;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class TestPlayer {
     @Test
     public void testPlayer() {
-        new Player("a", 1, StoneState.NONE, null);
-        new Player("b", 1, StoneState.WHITE, null);
-        new Player("c",1, StoneState.BLACK, null);
+        User user  = new User("a",new ByteArrayOutputStream());
+        new Player(user, StoneState.WHITE);
+        new Player(user, StoneState.BLACK);
+        try {
+            new Player(user, StoneState.NONE);
+            fail();
+        } catch (Exception e) {}
     }
 }

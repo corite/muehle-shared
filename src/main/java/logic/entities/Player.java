@@ -1,26 +1,32 @@
 package logic.entities;
 
+import logic.exceptions.IllegalPlayerException;
+
 import java.io.OutputStream;
 import java.io.Serializable;
 
 public class Player implements Serializable {
-    private final String name;
-    private StoneState color;
-    private final int nameId;
+    private final User user;
+    private final StoneState color;
     private GamePhase phase;
     private int placedStones=0;
-    private transient OutputStream outputStream;
 
-    public Player(String name, int nameId, StoneState color, OutputStream outputStream) {
-        this.name = name;
-        this.nameId = nameId;
+    public Player(User user, StoneState color) {
+        this.user = user;
         this.phase = GamePhase.PLACE;//initially always place
         this.color = color;
-        this.outputStream = outputStream;
+
+        if (StoneState.NONE.equals(color)) {
+            throw new IllegalArgumentException("player can only be white or black");
+        }
+    }
+
+    public User getUser() {
+        return user;
     }
 
     public String getName() {
-        return name;
+        return getUser().getName();
     }
 
     public StoneState getColor() {
@@ -39,32 +45,16 @@ public class Player implements Serializable {
         return placedStones;
     }
 
-    public void setPlacedStones(int placedStones) {
-        this.placedStones = placedStones;
-    }
-
     public void addPlacedStone() {
         this.placedStones++;
     }
 
-    public int getNameId() {
-        return nameId;
-    }
-
-    public String getPlayerId() {
-        return getName()+"#"+getNameId();
-    }
-
     public OutputStream getOutputStream() {
-        return outputStream;
+        return getUser().getOutputStream();
     }
 
     public void setOutputStream(OutputStream outputStream) {
-        this.outputStream = outputStream;
-    }
-
-    public void setColor(StoneState color) {
-        this.color = color;
+        getUser().setOutputStream(outputStream);
     }
 
     @Override
@@ -74,19 +64,16 @@ public class Player implements Serializable {
 
         Player player = (Player) o;
 
-        if (getNameId() != player.getNameId()) return false;
-        return getName() != null ? getName().equals(player.getName()) : player.getName() == null;
+        return getUser() != null ? getUser().equals(player.getUser()) : player.getUser() == null;
     }
 
     @Override
     public int hashCode() {
-        int result = getName() != null ? getName().hashCode() : 0;
-        result = 31 * result + getNameId();
-        return result;
+        return getUser() != null ? getUser().hashCode() : 0;
     }
 
     @Override
     public String toString() {
-        return this.getPlayerId();
+        return getUser().toString();
     }
 }

@@ -1,20 +1,21 @@
 package networking.entities;
 
-import logic.entities.Player;
+import logic.entities.User;
 
 import java.io.Serializable;
 
 /**
- * This action is sent by the client if he wants to end the session. It triggers the currently active game to be ended, and the removal of all records of this player on the server.
+ * This action is sent by the client if he wants to end the session. It triggers the removal of this user from the Server.
+ * If the User is still in a Game, EndGameAction has to be sent first.
  */
 public class EndSessionAction implements Serializable {
-    private final Player player;
+    private final User user;
 
-    public EndSessionAction(Player player) {
-        this.player = player;
+    public EndSessionAction(User user) {
+        this.user = user;
     }
 
-    public Player getPlayer() {
-        return player;
+    public User getUser() {
+        return user;
     }
 }
