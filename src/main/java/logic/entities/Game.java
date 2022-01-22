@@ -428,4 +428,21 @@ public class Game implements Serializable {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Game game = (Game) o;
+
+        if (!getPlayer1().equals(game.getPlayer1())) return false;
+        return getPlayer2().equals(game.getPlayer2());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getPlayer1().hashCode();
+        result = 31 * result + getPlayer2().hashCode();
+        return result;
+    }
 }
