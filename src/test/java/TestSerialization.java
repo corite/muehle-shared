@@ -29,7 +29,7 @@ public class TestSerialization {
         testSerializationAndDeserialization(new GameResponse("hello", ActionType.PLACE,self, other, new ArrayList<>(List.of(new Position(0,0)))));
 
         testSerializationAndDeserialization(new EndGameAction(self));
-        testSerializationAndDeserialization(new EndGameResponse("oh no"));
+        testSerializationAndDeserialization(new EndGameResponse(selfUser,"oh no"));
 
         testSerializationAndDeserialization(new ConnectAction(selfUser,otherUser));
         testSerializationAndDeserialization(new ReconnectAction(self));
